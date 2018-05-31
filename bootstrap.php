@@ -16,6 +16,33 @@
 
 namespace ExecutiveSuiteIt\Picksters;
 
-function plugin_launch() {
-
+if ( ! defined( 'ABSPATH' ) ) {
+	exit( 'Cheating?' );
 }
+
+
+/**
+ * Setup the plugin's constants.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function init_constants() {
+	$plugin_url = plugin_dir_url( __FILE__ );
+	if ( is_ssl() ) {
+		$plugin_url = str_replace( 'http://', 'https://', $plugin_url );
+	}
+
+	define( 'Picksters_URL', $plugin_url );
+	define( 'Picksters_DIR', plugin_dir_path( __FILE__) );
+}
+
+
+function plugin_launch() {
+	init_constants();
+
+	require_once( __DIR__ . '/assets/vendor/autoload.php' );
+}
+
+plugin_launch();
