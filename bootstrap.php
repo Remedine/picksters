@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 /**
- * Setup the plugin's constants.
+ * Setup the plugin's constants and adds .
  *
  * @since 1.0.0
  *
@@ -42,7 +42,7 @@ function init_constants() {
 function plugin_launch() {
 	init_constants();
 
-	require_once( __DIR__ . '/assets/vendor/autoload.php' );
+	require_once( __DIR__ . '/assets/init_plugin.php' );
 }
 
 plugin_launch();
