@@ -47,9 +47,35 @@ abstract class CUSTOM_DB_API {
 		return array();
 	}
 
-	public function get() {}
+	/**
+	 * Retrieve a row by the primary key.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param $row_id
+	 * @access public
+	 * @return object
+	 */
+	public function get( $row_id ) {
+		global $wpdb;
+		return $wpdb->get_row( $wpdb->prepare( " SELECT * FROM $this->table_name WHERE $this->primary_key = %s LIMIT 1;", $row_id) );
+	}
 
-	public function  get_by() {}
+	/**
+	 * retrieve a row by a specific column / value.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param $column
+	 * @param $row_id
+	 * @access public
+	 * @return object
+	 */
+	public function  get_by( $column, $row_id ) {
+		global  $wpdb;
+		$column = esc_sql( $column );
+		return $wpdb->get_row($wpdb->prepare( "SELECT * FROM $this->table_name WHERE $column = %s LIMIT 1;", row_id ) );
+	}
 
 	public function get_column() {}
 
