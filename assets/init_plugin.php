@@ -11,6 +11,7 @@
 
 namespace ExecutiveSuiteIt\Picksters;
 
+//registers the custom db tables upon plugin activation
 register_activation_hook( __FILE__, 'init_create_custom_db_tables' );
 
 /**
@@ -27,10 +28,10 @@ function init_create_custom_db_tables() {
 	//define the table structure
 	$sql        = "CREATE TABLE " . $table_name . " (
 		id mediumint(3) NOT NULL AUTO_INCREMENT,
-		team_name VARCHAR(30),
-		team_city VARCHAR(50),
-		team_nickname_1 VARCHAR (20),
-		team_nickname_2 VARCHAR (20)
+		team_name VARCHAR(30) NOT NULL DEFAULT '',
+		team_city VARCHAR(50) NOT NULL DEFAULT '',
+		team_nickname_1 VARCHAR (20) NOT NULL DEFAULT '',
+		team_nickname_2 VARCHAR (20) DEFAULT ''
 		);";
 
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
