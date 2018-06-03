@@ -26,7 +26,7 @@ function init_create_custom_db_tables() {
 	//define the custom table name
 	$table_name = $wpdb->prefix . 'Pickster_teams';
 	//define the table structure
-	$sql        = "CREATE TABLE " . $table_name . " (
+	$sql = "CREATE TABLE " . $table_name . " (
 		id mediumint(3) NOT NULL AUTO_INCREMENT,
 		team_name VARCHAR(30) NOT NULL DEFAULT '',
 		team_city VARCHAR(50) NOT NULL DEFAULT '',
