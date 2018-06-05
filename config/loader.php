@@ -12,4 +12,4 @@
 namespace ExecutiveSuiteIt\Picksters;
 
 //load the custom db api
-include(__dir__ . '/class-custom-db-api.php');
+include_once(__dir__ . '/class-custom-db-api.php');

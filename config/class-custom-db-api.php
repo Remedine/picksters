@@ -116,6 +116,12 @@ abstract class CUSTOM_DB_API {
 	 * @access  public
 	 * @since   2.1
 	 * @return  int
+	 * //example arguments
+	                $args = array(
+						'name'    => 'Elizabeth Alexander',
+						'email'   => 'lis@sample-domain.com',
+						'country' => 'UK'
+					);
 	 */
 	public function insert( $data, $type = '' ) {
 		global $wpdb;
