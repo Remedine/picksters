@@ -23,7 +23,7 @@ abstract class CUSTOM_DB_API {
 	 * @access public
 	 *
 	 */
-	public function __cuonstruct() {
+	public function __construct() {
 	}
 
 	/**

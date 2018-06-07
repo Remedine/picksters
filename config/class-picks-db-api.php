@@ -27,7 +27,15 @@ public function __construct() {
 	$this->version     = '1.0';
 }
 
-public function create_table() {
+public
+/**
+ * When triggered it creates the picks table.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function create_table() {
 	global $wpdb;
 
 	require_once( ABSPATH . 'wp-admin/includes/upgrage.php');
@@ -56,3 +64,89 @@ public function create_table() {
 	$db = new PW_Orders_DB;
 	$db->create_table();
  */
+
+/**
+ * Get columns and formats
+ *
+ * @access  public
+ * @since   1.0
+ */
+public function get_columns() {
+	return array(
+		pick_id => '%d',
+		user_name => '%s',
+		user_id  => '%d',
+		pick_week  => '%d',
+		pick_year => '%d',
+		game_id => '%d',
+		home_team_name => '%s',
+		away_team_name => '%s',
+		pick=> '%s',
+	);
+}
+
+/**
+ * Get default column values
+ *
+ * @access  public
+ * @since   1.0
+ */
+public function get_column_defaults() {
+	return array(
+		pick_id => '0',
+		user_name => '',
+		user_id  => '',
+		pick_week  => '',
+		pick_year => '',
+		game_id => '',
+		home_team_name => '',
+		away_team_name => '',
+		pick=> '',
+	);
+}
+
+/**
+ * Retrieve orders from the database
+ *
+ * @access  public
+ * @since   1.0
+ * @param   array $args
+ * @param   bool  $count  Return only the total number of results found (optional)
+ */
+
+public function get_picks( $args = array(), $count = false) {
+	global $wpdb;
+
+	$defaults = array(
+		'number' => 20,
+		'offset' => 0,
+		'user_id' => '',
+		'pick_id' => 0,
+		'pick_year' => '',
+		'pick_week' => '',
+		'orderby' => 'pick_id',
+		'order' => 'DESC',
+	);
+
+	$args = wp_parse_args($args, $defaults);
+
+	if( $args['number'] < 1 ) {
+		$args['number'] = 9999999999999;
+	}
+
+	$where = '';
+
+	// specific referrals
+	if( ! empty( $args['pick_id'])) {
+
+		if( is_array($args['pick_id'])) {
+			$order_ids = implode(',', $args['order_id']);
+		} else {
+			$order_ids = intval($args['order_id']);
+		}
+
+		$where .= "WHERE 'order_id' IN {$order_ids} ) ";
+	}
+
+	if( ! empty($args['']))
+}

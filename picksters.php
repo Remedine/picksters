@@ -48,7 +48,7 @@ function init_constants() {
 function init_create_custom_db_tables() {
 	global $wpdb;
 	//define the custom table name
-	$table_name = $wpdb->prefix . 'Pickster_picks';
+/*	$table_name = $wpdb->prefix . 'Pickster_picks';
 	//define the table structure
 	$sql = "CREATE TABLE " . $table_name . " (
 		pick_id mediumint(30) AUTO_INCREMENT PRIMARY KEY,
@@ -61,7 +61,7 @@ function init_create_custom_db_tables() {
 		away_team_name VARCHAR(30),
 		pick VARCHAR(50) NOT NULL
 		);";
-
+*/
 	$table_name = $wpdb->prefix . 'Pickster_games';
 
 	$sql2 = "CREATE TABLE " . $table_name . " (
