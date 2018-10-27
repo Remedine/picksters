@@ -2,7 +2,7 @@
 /**
  * Picksters Plugin
  *
- * @package     Digitalseeds\Picksters
+ * @package     Digitalseeds\Picksters\Support
  * @author      hellofromTonya
  * @license     GPL-2.0+
  *
@@ -18,12 +18,16 @@
  * License URI:
  */
 
-namespace Digitalseeds\Picksters;
+namespace Digitalseeds\Picksters\Support;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit( 'Cheatin&#8217; uh?' );
+add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\load_assets' );
+/**
+ * Load assets.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function load_assets() {
+	wp_enqueue_script( 'sandbox_workspace_script', SANDBOX_WORKSPACE_URL . 'assets/js/my_script.js' );
 }
-
-define( 'PICKSTERS_WORKSPACE_URL', plugin_dir_url( __FILE__ ) );
-
-require_once( __DIR__. '/src/support/load-assets.php' );
