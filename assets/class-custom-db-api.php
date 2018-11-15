@@ -53,6 +53,7 @@ function init_create_custom_db_tables() {
 //registers the custom db tables upon plugin activation
 register_activation_hook( __FILE__, 'ExecutiveSuiteIt\Picksters\init_create_custom_db_tables' );
 
+
 /**
  * Creates the initial database tables.
  *

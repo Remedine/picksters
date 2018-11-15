@@ -16,83 +16,67 @@
 
 namespace ExecutiveSuiteIt\Picksters;
 
+use ExecutiveSuiteIt\Picksters\Classes\class_picksters_login;
+use ExecutiveSuiteIt\Picksters\Classes\Picksters_Config_Manager;
+use ExecutiveSuiteIt\Picksters\Classes\Picksters_Registration;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit( 'Cheating?' );
 }
 
+if( ! class_exists( 'picksters' ) ) {
+	class Picksters{
+		private static $instance;
 
-/**
- * Setup the plugin's constants and adds .
- *
- * @since 1.0.0
- *
- * @return void
- */
-function init_constants() {
-	$plugin_url = plugin_dir_url( __FILE__ );
-	if ( is_ssl() ) {
-		$plugin_url = str_replace( 'http://', 'https://', $plugin_url );
-	}
+		public static function instance() {
 
-	define( 'Picksters_URL', $plugin_url );
-	define( 'Picksters_DIR', plugin_dir_path( __FILE__ ) );
-}
+			if ( ! isset(self::$instance ) && ! (self::$instance instanceof picksters ) ) {
+				self::$instance = new picksters();
+				self::$instance->setup_constants();
+				self::$instance->includes();
 
+				add_action( 'admin_enqueue_scripts', array(self::$instance, 'load_admin_scripts'), 9);
+				add_action( 'wp_enqueue_scripts', array(self::$instance, 'load_scripts'), 9);
 
-function plugin_launch() {
-	init_constants();
+					//Class object initialization
+				self::$instance->config_manager = new Picksters_Config_Manager();
+				self::$instance->registration = new Picksters_Registration();
+				self::$instance->login = new class_picksters_login();
 
+				register_activation_hook( __FILE__, array( self::$instance->config_manager, 'activation_handler' ) );
 
-	function init_create_custom_db_tables() {
-		global $wpdb;
-		//define the custom table name
-		$table_name = $wpdb->prefix . 'Pickster_picks';
-		//define the table structure
-		$sql = "CREATE TABLE " . $table_name . " (
-		pick_id mediumint(30) AUTO_INCREMENT PRIMARY KEY,
-		user_name VARCHAR (30) NOT NULL,
-		user_id mediumint(30) NOT NULL,
-		pick_week mediumint(2) NOT NULL,
-		pick_year mediumint(4) NOT NULL,
-		game_id mediumint(30) NOT NULL,
-		home_team_name VARCHAR(30),
-		away_team_name VARCHAR(30),
-		pick VARCHAR(50) NOT NULL
-		);";
+			}
 
-		$table_name = $wpdb->prefix . 'Pickster_games';
+			return self::$instance;
 
-		$sql2 = "CREATE TABLE " . $table_name . " (
-		game_id mediumint(30) AUTO_INCREMENT PRIMARY KEY,
-		week mediumint(2) NOT NULL,
-		year mediumint(4) NOT NULL,
-		season_type VARCHAR(9) NOT NULL,
-		home_team_name VARCHAR(30),
-		away_team_name VARCHAR(30),
-		home_team_final_score mediumint(3) NOT NULL,
-		away_team_final_score mediumint(3) NOT NULL		
-		);";
-
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-
-		//execute the query creating our table
-		dbDelta( $sql );
-		dbDelta( $sql2 );
+		}
+		public function setup_constants() {
+			if( ! defined( 'picksers_version' ) ) {
+				define ( 'picksters_version', '1.0' );
+			}
+			if ( ! defined( 'picksters_plugin_dir' ) ) {
+				define( 'picksters_plugin_dir', plugin_dir_path( __FILE__ ) );
+			}
+			if ( ! defined( 'picksters_plugin_url' ) ) {
+				define( 'picksters_plugin_url', plugin_dir_url( __FILE__ ) );
+			}
+		}
+		public function load_scripts(){}
+		public function load_admin_scripts(){}
+		private function includes() {
+			require_once picksters_plugin_dir . 'classes/class_picksters_config_manager.php';
+			require_once picksters_plugin_dir . 'classes/class_picksters_registration.php';
+			require_once picksters_plugin_dir . 'classes/class_picksters_login.php';
+			require_once picksters_plugin_dir . 'functions.php';
+		}
+		public function load_textdomain() {}
 
 	}
 
-	//registers the custom db tables upon plugin activation
-	register_activation_hook( __FILE__, 'ExecutiveSuiteIt\Picksters\init_create_custom_db_tables' );
-
-	/**
-	 * Creates the initial database tables.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-
+	function picksters() {
+		global $picksters;
+		$picksters = picksters::instance();
+	}
 
 }
-
-plugin_launch();
+picksters();
