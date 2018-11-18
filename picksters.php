@@ -1,4 +1,4 @@
-<?php
+git<?php
 /**
  * Description: Picksters fun stuff.
  * Plugin Name:  Picksters
