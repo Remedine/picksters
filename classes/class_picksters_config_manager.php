@@ -24,6 +24,7 @@ class Picksters_Config_Manager {
 		$this->remove_application_user_roles();
 		$this->add_application_user_capabilities();
 		$this->flush_application_rewrite_rules();
+		$this->create_custom_tables();
 	}
 
 	public function remove_application_user_roles() {

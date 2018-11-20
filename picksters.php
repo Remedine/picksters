@@ -94,10 +94,9 @@ if ( ! class_exists( 'picksters' ) ) {
                   away_team_id VARCHAR(38) NOT NULL,
                   home_team_score mediumint(3),
                   away_team_score mediumint(3),
-                  week
-                  year
-                  season_type
-                  
+                  week mediumint(2) NOT NULL,
+                  year mediumint(4) NOT NULL,
+                  season_type VARCHAR(4) NOT NULL                  
                 );";
 				dbDelta( $sql );
 			}
@@ -108,9 +107,6 @@ if ( ! class_exists( 'picksters' ) ) {
                     pick_time DATETIME DEFAULT '0000-00-00 00:00:00' NOT NULL,
                     pickster_id mediumint(9) NOT NULL,
                     pick VARCHAR(38),
-                    week
-                    
-
                 );";
 			};
 		}
