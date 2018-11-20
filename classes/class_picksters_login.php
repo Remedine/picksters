@@ -12,7 +12,7 @@
 namespace ExecutiveSuiteIt\Picksters\Classes;
 
 
-class class_picksters_login {
+class Picksters_Login {
 
 	public function __construct() {
 		add_action( 'init', array( $this, 'login_user' ) );
