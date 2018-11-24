@@ -111,8 +111,8 @@ if ( ! class_exists( 'picksters' ) ) {
               dbDelta( $sql );
 			}
           $Team_table = $wpdb->prefix . 'teams';
-          if( $wpdb->get_var( "show tables like '$Team_table'" )  != $team_table ) {
-          $sql = "CREATE TABLE $Team_table (
+          if( $wpdb->get_var( "show tables like '$Team_table'" )  != $Team_table ) {
+	          $sql = "CREATE TABLE $Team_table (
                  team_id mediumint(2) NOT NULL PRIMARY KEY AUTO_INCREMENT,
                  team_city VARCHAR(40),
                  team_name VARCHAR(40),
@@ -120,8 +120,9 @@ if ( ! class_exists( 'picksters' ) ) {
                  team_nickname2 VARCHAR(40),
                  team_acronym VARCHAR(4),
                  );";
-          		}
-          	dbDela( $sql );
+	          dbDela( $sql );
+          }
+
             }
 
 	}
