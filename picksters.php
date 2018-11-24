@@ -1,4 +1,4 @@
-git<?php
+<?php
 /**
  * Description: Picksters fun stuff.
  * Plugin Name:  Picksters
@@ -88,7 +88,7 @@ if ( ! class_exists( 'picksters' ) ) {
 			if ( $wpdb->get_var( "show tables like '$Games_table'" ) != $Games_table ) {
 				$sql = "CREATE TABLE $Games_table (
                   game_id mediumint(9) NOT NULL Primary Key AUTO_INCREMENT,
-                  game_start_time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,         
+                  game_start_time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
                   user_id mediumint(9) NOT NULL,
                   home_team_id VARCHAR(38) NOT NULL,
                   away_team_id VARCHAR(38) NOT NULL,
@@ -96,7 +96,7 @@ if ( ! class_exists( 'picksters' ) ) {
                   away_team_score mediumint(3),
                   week mediumint(2) NOT NULL,
                   year mediumint(4) NOT NULL,
-                  season_type VARCHAR(4) NOT NULL                  
+                  season_type VARCHAR(4) NOT NULL
                 );";
 				dbDelta( $sql );
 			}
@@ -108,8 +108,21 @@ if ( ! class_exists( 'picksters' ) ) {
                     pickster_id mediumint(9) NOT NULL,
                     pick VARCHAR(38),
                 );";
-			};
-		}
+              dbDelta( $sql );
+			}
+          $Team_table = $wpdb->prefix . 'teams';
+          if( $wpdb->get_var( "show tables like '$Team_table'" )  != $team_table ) {
+          $sql = "CREATE TABLE $Team_table (
+                 team_id mediumint(2) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+                 team_city VARCHAR(40),
+                 team_name VARCHAR(40),
+                 team_nickname VARCHAR(40),
+                 team_nickname2 VARCHAR(40),
+                 team_acronym VARCHAR(4),
+                 );";
+          		}
+          	dbDela( $sql );
+            }
 
 	}
 
