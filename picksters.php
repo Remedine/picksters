@@ -80,50 +80,7 @@ if ( ! class_exists( 'picksters' ) ) {
 		public function load_textdomain() {
 		}
 
-		public function create_custom_tables() {
-			global $wpdb;
-			require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
-			$Games_table = $wpdb->prefix . 'games';
-			if ( $wpdb->get_var( "show tables like '$Games_table'" ) != $Games_table ) {
-				$sql = "CREATE TABLE $Games_table (
-                  game_id mediumint(9) NOT NULL Primary Key AUTO_INCREMENT,
-                  game_start_time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-                  user_id mediumint(9) NOT NULL,
-                  home_team_id VARCHAR(38) NOT NULL,
-                  away_team_id VARCHAR(38) NOT NULL,
-                  home_team_score mediumint(3),
-                  away_team_score mediumint(3),
-                  week mediumint(2) NOT NULL,
-                  year mediumint(4) NOT NULL,
-                  season_type VARCHAR(4) NOT NULL
-                );";
-				dbDelta( $sql );
-			}
-			$Picks_table = $wpdb->prefix . 'picks';
-			if ( $wpdb->get_var( "show tables like '$Picks_table'" ) != $Picks_table ) {
-				$sql = "CREATE TABLE $Picks_table (
-                    pick_id mediumint(9) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-                    pick_time DATETIME DEFAULT '0000-00-00 00:00:00' NOT NULL,
-                    pickster_id mediumint(9) NOT NULL,
-                    pick VARCHAR(38),
-                );";
-              dbDelta( $sql );
-			}
-          $Team_table = $wpdb->prefix . 'teams';
-          if( $wpdb->get_var( "show tables like '$Team_table'" )  != $Team_table ) {
-	          $sql = "CREATE TABLE $Team_table (
-                 team_id mediumint(2) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-                 team_city VARCHAR(40),
-                 team_name VARCHAR(40),
-                 team_nickname VARCHAR(40),
-                 team_nickname2 VARCHAR(40),
-                 team_acronym VARCHAR(4),
-                 );";
-	          dbDela( $sql );
-          }
-
-            }
 
 	}
 
