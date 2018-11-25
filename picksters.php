@@ -19,7 +19,10 @@ namespace ExecutiveSuiteIt\Picksters;
 use ExecutiveSuiteIt\Picksters\Classes\class_picksters_login;
 use ExecutiveSuiteIt\Picksters\Classes\Picksters_Config_Manager;
 use ExecutiveSuiteIt\Picksters\Classes\Picksters_Login;
+use ExecutiveSuiteIt\Picksters\Classes\Picksters_Model_Manager;
+use ExecutiveSuiteIt\picksters\classes\Picksters_Model_Weekly_Picks;
 use ExecutiveSuiteIt\Picksters\Classes\Picksters_Registration;
+use ExecutiveSuiteIt\Picksters\Classes\Picksters_Template_Loader;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit( 'Cheating?' );
@@ -43,6 +46,9 @@ if ( ! class_exists( 'picksters' ) ) {
 				self::$instance->config_manager = new Picksters_Config_Manager();
 				self::$instance->registration   = new Picksters_Registration();
 				self::$instance->login          = new Picksters_Login();
+				self::$instance->template_loader = new Picksters_Template_Loader();
+				self::$instance->model_manager   = new Picksters_Model_Manager();
+				self::$instance->weekly_picks    = new Picksters_Model_Weekly_Picks();
 
 				register_activation_hook( __FILE__, array( self::$instance->config_manager, 'activation_handler' ) );
 
@@ -75,11 +81,13 @@ if ( ! class_exists( 'picksters' ) ) {
 			require_once picksters_plugin_dir . 'classes/class_picksters_registration.php';
 			require_once picksters_plugin_dir . 'classes/class_picksters_login.php';
 			require_once picksters_plugin_dir . 'functions.php';
+			require_once picksters_plugin_dir . 'classes/class_picksters_template_loader.php';
+			require_once picksters_plugin_dir . 'classes/class_picksters_model_manager.php';
+			require_once picksters_plugin_dir . 'classes/class_picksters_model_weekly_picks.php';
 		}
 
 		public function load_textdomain() {
 		}
-
 
 
 	}
