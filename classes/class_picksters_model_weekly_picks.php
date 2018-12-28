@@ -62,9 +62,10 @@ public function get_current_season() {
 	return $current_season;
 }
 
+
 public function display_weekly_picks_forms() {
 	global $picksters_login_params;
-	if ( ! is_user_logged_in() ) {
+	if ( is_user_logged_in() ) {
 		include picksters_plugin_dir . 'templates/weekly-pick.php';
 	} else {
 		wp_redirect( home_url() );
