@@ -17,6 +17,7 @@
 namespace ExecutiveSuiteIt\Picksters;
 
 use ExecutiveSuiteIt\Picksters\Classes\class_picksters_login;
+use ExecutiveSuiteIt\Picksters\Classes\Helper\jsonhandler;
 use ExecutiveSuiteIt\Picksters\Classes\Picksters_Config_Manager;
 use ExecutiveSuiteIt\Picksters\Classes\Picksters_Login;
 use ExecutiveSuiteIt\Picksters\Classes\Picksters_Model_Manager;
@@ -51,6 +52,7 @@ if ( ! class_exists( 'picksters' ) ) {
 				self::$instance->model_manager   = new Picksters_Model_Manager();
 				self::$instance->weekly_picks    = new Picksters_Model_Weekly_Picks();
 				self::$instance->six_picks       = new Picksters_Model_Six_Picks();
+				self::$instance->jsonhandler     = new jsonhandler();
 
 				register_activation_hook( __FILE__, array( self::$instance->config_manager, 'activation_handler' ) );
 
@@ -87,6 +89,7 @@ if ( ! class_exists( 'picksters' ) ) {
 			require_once picksters_plugin_dir . 'classes/class_picksters_model_manager.php';
 			require_once picksters_plugin_dir . 'classes/class_picksters_model_weekly_picks.php';
 			require_once picksters_plugin_dir . 'classes/class_picksters_model_six_picks.php';
+			require_once picksters_plugin_dir . 'classes/helper/class_jsonhelper.php';
 		}
 
 		public function load_textdomain() {
