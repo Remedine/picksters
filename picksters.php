@@ -25,6 +25,7 @@ use ExecutiveSuiteIt\picksters\classes\Picksters_Model_Weekly_Picks;
 use ExecutiveSuiteIt\Picksters\Classes\Picksters_Registration;
 use ExecutiveSuiteIt\Picksters\Classes\Picksters_Template_Loader;
 use ExecutiveSuiteIt\Picksters\Classes\Picksters_Model_Six_Picks;
+use ExecutiveSuiteIt\Picksters\Classes\testing_class;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit( 'Cheating?' );
@@ -53,6 +54,7 @@ if ( ! class_exists( 'picksters' ) ) {
 				self::$instance->weekly_picks    = new Picksters_Model_Weekly_Picks();
 				self::$instance->six_picks       = new Picksters_Model_Six_Picks();
 				self::$instance->jsonhandler     = new jsonhandler();
+				self::$instance->test            = new testing_class();
 
 				register_activation_hook( __FILE__, array( self::$instance->config_manager, 'activation_handler' ) );
 
@@ -90,6 +92,7 @@ if ( ! class_exists( 'picksters' ) ) {
 			require_once picksters_plugin_dir . 'classes/class_picksters_model_weekly_picks.php';
 			require_once picksters_plugin_dir . 'classes/class_picksters_model_six_picks.php';
 			require_once picksters_plugin_dir . 'classes/helper/class_jsonhelper.php';
+			require_once picksters_plugin_dir . 'classes/testing_class.php';
 		}
 
 		public function load_textdomain() {

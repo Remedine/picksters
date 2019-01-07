@@ -138,6 +138,10 @@ class Picksters_Config_Manager {
 				do_action( 'picksters_after_weekly_picks');
 				break;
 
+			case 'test':
+				do_action( 'picksters_before_test');
+				$picksters->test->display_test_data();
+				do_action( 'picksters_after_test');
 
 			default:
 				break;
