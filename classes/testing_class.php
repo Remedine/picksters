@@ -18,10 +18,12 @@ class testing_class {
 
 	//load data file
 	public function load_nfl_week() {
+		global $picksters;
 		$file = picksters_plugin_dir . 'assets/jsondata/nfl.json';
 		if ( file_exists( $file ) ) {
 			$json = file_get_contents( $file );
-			$json_data = $picksters->jsonhandler->deecode($json);
+			$json_data = $picksters->jsonhandler->decode($json, true);
+
 
 			return $json_data;
 		}

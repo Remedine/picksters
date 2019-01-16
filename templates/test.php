@@ -13,14 +13,19 @@ namespace ExecutiveSuiteIt\Picksters\Templates;
 
 get_header(); ?>
 
-<div>
-	<?php
-	foreach ($json_data as $data) {
-	?>
+<div id="hi">
 
-	<br>
-	<?php
-		print_r($data);
-	?><br><?php
-	}; ?>
+
+    <?php
+
+
+
+        for( $bob = 0; $bob <=15; $bob++ ) {
+
+	        echo 'Visiting Team:               ' . $json_data['gameScores'][ $bob ]['gameSchedule']['visitorDisplayName'] . ' ..... SCORE:    ' .
+	             $json_data['gameScores'][ $bob ]['score']['visitorTeamScore']['pointTotal'] . '  VS  ' . '   Home Team:    ' .
+	             $json_data['gameScores'][ $bob ]['gameSchedule']['homeDisplayName'] . ' ' . ' ..... SCORE:    ' .
+	             $json_data['gameScores'][ $bob ]['score']['homeTeamScore']['pointTotal'] . '<br>';
+        }
+	?>
 </div>
