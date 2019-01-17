@@ -18,14 +18,27 @@ get_header(); ?>
 
     <?php
 
+        for( $bob = 0; $bob <=19; $bob++ ) {
 
+	        if( $json_data['gameScores'][ $bob ]['gameSchedule']['visitorDisplayName'] == null ) { break; };
 
-        for( $bob = 0; $bob <=15; $bob++ ) {
-
-	        echo 'Visiting Team:               ' . $json_data['gameScores'][ $bob ]['gameSchedule']['visitorDisplayName'] . ' ..... SCORE:    ' .
+            echo 'Visiting Team:               ' . $json_data['gameScores'][ $bob ]['gameSchedule']['visitorDisplayName'] . ' ..... SCORE:    ' .
 	             $json_data['gameScores'][ $bob ]['score']['visitorTeamScore']['pointTotal'] . '  VS  ' . '   Home Team:    ' .
 	             $json_data['gameScores'][ $bob ]['gameSchedule']['homeDisplayName'] . ' ' . ' ..... SCORE:    ' .
 	             $json_data['gameScores'][ $bob ]['score']['homeTeamScore']['pointTotal'] . '<br>';
         }
+
+    for( $bob = 0; $bob <=19; $bob++ ) {
+
+	    if( $json_1['gameScores'][ $bob ]['gameSchedule']['visitorDisplayName'] == null ) { break; };
+
+	    echo 'Visiting Team:               ' . $json_1['gameScores'][ $bob ]['gameSchedule']['visitorDisplayName'] . ' ..... SCORE:    ' .
+	         $json_1['gameScores'][ $bob ]['score']['visitorTeamScore']['pointTotal'] . '  VS  ' . '   Home Team:    ' .
+	         $json_1['gameScores'][ $bob ]['gameSchedule']['homeDisplayName'] . ' ' . ' ..... SCORE:    ' .
+	         $json_1['gameScores'][ $bob ]['score']['homeTeamScore']['pointTotal'] . '<br>';
+    }
+
+
+
 	?>
 </div>
