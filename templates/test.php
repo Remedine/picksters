@@ -18,6 +18,8 @@ get_header(); ?>
 
     <?php
 
+
+
         for( $bob = 0; $bob <=19; $bob++ ) {
 
 	        if( $json_data['gameScores'][ $bob ]['gameSchedule']['visitorDisplayName'] == null ) { break; };
@@ -32,7 +34,7 @@ get_header(); ?>
 
 	    if( $json_1['gameScores'][ $bob ]['gameSchedule']['visitorDisplayName'] == null ) { break; };
 
-	    echo 'Visiting Team:               ' . $json_1['gameScores'][ $bob ]['gameSchedule']['visitorDisplayName'] . ' ..... SCORE:    ' .
+	    echo '<br>Visiting Team:               ' . $json_1['gameScores'][ $bob ]['gameSchedule']['visitorDisplayName'] . ' ..... SCORE:    ' .
 	         $json_1['gameScores'][ $bob ]['score']['visitorTeamScore']['pointTotal'] . '  VS  ' . '   Home Team:    ' .
 	         $json_1['gameScores'][ $bob ]['gameSchedule']['homeDisplayName'] . ' ' . ' ..... SCORE:    ' .
 	         $json_1['gameScores'][ $bob ]['score']['homeTeamScore']['pointTotal'] . '<br>';
