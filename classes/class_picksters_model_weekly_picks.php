@@ -73,7 +73,7 @@ public function display_weekly_picks_forms() {
 	exit;
 }
 
-public function get_weekly_games() {
+public function get_weekly_games( $week, $seasonType, $year) {
   global $wpdb;
   $current_week = $this->get_current_week();
   $current_season = $this->get_current_season();

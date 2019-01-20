@@ -139,9 +139,9 @@ class Picksters_Config_Manager {
 				break;
 
 			case 'test':
-				do_action( 'picksters_before_test');
-				$picksters->test->display_test_data();
-				do_action( 'picksters_after_test');
+				do_action( 'picksters_before_template');
+				$picksters->test->display_data_template();
+				do_action( 'picksters_after_template');
 
 			default:
 				break;
@@ -156,10 +156,12 @@ class Picksters_Config_Manager {
 		if ( $wpdb->get_var( "show tables like '$Games_table'" ) != $Games_table ) {
 			$sql = "CREATE TABLE $Games_table (
                   game_id mediumint(9) NOT NULL Primary Key AUTO_INCREMENT,
-                  game_start_time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-                  user_id mediumint(9) NOT NULL,
-                  home_team_id VARCHAR(38) NOT NULL,
-                  away_team_id VARCHAR(38) NOT NULL,
+                  nfl_game_id mediumint(25),
+                  date DATE NOT NULL,
+                  game_start_time TIME DEFAULT '0000-00-00 00:00:00' NOT NULL,
+                  isotime VARCHAR(100),
+                  home_team VARCHAR(38) NOT NULL,
+                  away_team VARCHAR(38) NOT NULL,
                   home_team_score mediumint(3),
                   away_team_score mediumint(3),
                   week mediumint(2) NOT NULL,
