@@ -23,13 +23,23 @@ get_header(); ?>
 
 	        if( $json_data['gameScores'][ $i ]['gameSchedule']['visitorDisplayName'] == null ) { break; };
 
+
+
+
             echo 'Visiting Team:               ' . $json_data['gameScores'][ $i ]['gameSchedule']['visitorDisplayName'] . ' ..... SCORE:    ' .
                  $json_data['gameScores'][ $i ]['score']['visitorTeamScore']['pointTotal'] . '  VS  ' . '   Home Team:    ' .
                  $json_data['gameScores'][ $i ]['gameSchedule']['homeDisplayName'] . ' ' . ' ..... SCORE:    ' .
-                 $json_data['gameScores'][ $i ]['score']['homeTeamScore']['pointTotal'] . '<br>';
+                 $json_data['gameScores'][ $i ]['score']['homeTeamScore']['pointTotal'] . '<br>'
+                . $game_id = $json_data['gameScores'][ $i ]['gameSchedule']['gameId'];
         }
 
 
+if ( current_user_can( 'administrator' ) ) {
+    global $wpdb;
+    echo "<pre>";
+    print_r( $wpdb->queries );
+    echo "</pre>";
+}
 
 
 	?>

@@ -156,7 +156,7 @@ class Picksters_Config_Manager {
 		if ( $wpdb->get_var( "show tables like '$Games_table'" ) != $Games_table ) {
 			$sql = "CREATE TABLE $Games_table (
                   game_id mediumint(9) NOT NULL Primary Key AUTO_INCREMENT,
-                  nfl_game_id mediumint(25),
+                  nfl_game_id VARCHAR(25) NOT NULL UNIQUE,
                   date DATE NOT NULL,
                   game_start_time TIME DEFAULT '0000-00-00 00:00:00' NOT NULL,
                   isotime VARCHAR(100),

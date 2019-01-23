@@ -105,7 +105,7 @@ class testing_class {
 
 			if( $json_data['gameScores'][ $i ]['gameSchedule']['visitorDisplayName'] == null ) { break; };
 
-			$game_id = $json_data['gameScores'][ $i ]['gameSchedule']['gameId'];
+			$game_id =  $json_data['gameScores'][ $i ]['gameSchedule']['gameId'] . 'abc';
 			$year = $json_data['gameScores'][ $i ]['gameSchedule']['season'];
 			$week = $json_data['gameScores'][ $i ]['gameSchedule']['week'];
 			$season_type = $json_data['gameScores'][ $i ]['gameSchedule']['gameType'];
@@ -134,7 +134,6 @@ class testing_class {
 					'away_team_score' => $visitor_team_score
 				)
 			);
-
 
 
 
