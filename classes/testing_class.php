@@ -15,9 +15,9 @@ namespace ExecutiveSuiteIt\Picksters\Classes;
 class testing_class {
 
 	//load data file
-	public function get_week_json_file( $week, $year, $seasonType) {
+	public function get_week_json_file( $week, $year, $seasonType ) {
 		global $picksters;
-		$file = picksters_plugin_dir . 'assets/jsondata/'. $year .'/' . $seasonType . '_' . $week . '.json';
+		$file = picksters_plugin_dir . 'assets/jsondata/' . $year . '/' . $seasonType . '_' . $week . '.json';
 		if ( file_exists( $file ) ) {
 			$json      = file_get_contents( $file );
 			$json_data = $picksters->jsonhandler->decode( $json, true );
@@ -41,11 +41,11 @@ class testing_class {
 	 *
 	 * @return void
 	 */
-	public function display_data_template( $page_name = 'test', $week = 1, $year = 2018, $seasonType = 'REG') {
+	public function display_data_template( $page_name = 'test', $week = 1, $year = 2018, $seasonType = 'REG' ) {
 		global $picksters;
 
 		$json_data = $this->get_week_json_file( $week, $year, $seasonType );
-		$this->save_nfl_data_to_db($json_data);
+		$this->save_season_to_db();
 		include picksters_plugin_dir . 'templates/' . $page_name . '.php';
 	}
 
@@ -101,42 +101,65 @@ class testing_class {
 
 	public function save_nfl_data_to_db( $json_data ) {
 
-		for( $i = 0; $i <= 19; $i++ ) {
+		for ( $i = 0; $i <= 19; $i ++ ) {
 
-			if( $json_data['gameScores'][ $i ]['gameSchedule']['visitorDisplayName'] == null ) { break; };
+			if ( $json_data['gameScores'][ $i ]['gameSchedule']['visitorDisplayName'] == null ) {
+				break;
+			};
 
-			$game_id =  $json_data['gameScores'][ $i ]['gameSchedule']['gameId'] . 'abc';
-			$year = $json_data['gameScores'][ $i ]['gameSchedule']['season'];
-			$week = $json_data['gameScores'][ $i ]['gameSchedule']['week'];
-			$season_type = $json_data['gameScores'][ $i ]['gameSchedule']['gameType'];
-			$date = $json_data['gameScores'][ $i ]['gameSchedule']['gameDate'];
+			$game_id            = $json_data['gameScores'][ $i ]['gameSchedule']['gameId'];
+			$year               = $json_data['gameScores'][ $i ]['gameSchedule']['season'];
+			$week               = $json_data['gameScores'][ $i ]['gameSchedule']['week'];
+			$season_type        = $json_data['gameScores'][ $i ]['gameSchedule']['gameType'];
+			$date               = $json_data['gameScores'][ $i ]['gameSchedule']['gameDate'];
 			$start_time_eastern = $json_data['gameScores'][ $i ]['gameSchedule']['gameTimeEastern'];
-			$isotime = $json_data['gameScores'][ $i ]['gameSchedule']['isoTime'];
-			$home_team = $json_data['gameScores'][ $i ]['gameSchedule']['homeDisplayName'];
-			$visitor_team = $json_data['gameScores'][ $i ]['gameSchedule']['visitorDisplayName'];
-			$home_team_score = $json_data['gameScores'][ $i ]['score']['homeTeamScore']['pointTotal'];
+			$isotime            = $json_data['gameScores'][ $i ]['gameSchedule']['isoTime'];
+			$home_team          = $json_data['gameScores'][ $i ]['gameSchedule']['homeDisplayName'];
+			$visitor_team       = $json_data['gameScores'][ $i ]['gameSchedule']['visitorDisplayName'];
+			$home_team_score    = $json_data['gameScores'][ $i ]['score']['homeTeamScore']['pointTotal'];
 			$visitor_team_score = $json_data['gameScores'][ $i ]['score']['visitorTeamScore']['pointTotal'];
 
 			global $wpdb;
 			$wpdb->insert(
 				$wpdb->prefix . 'games',
 				array(
-					'nfl_game_id' => $game_id,
-					'year' => $year,
-					'week' => $week,
-					'season_type' => $season_type,
-					'date' => $date,
+					'nfl_game_id'     => $game_id,
+					'year'            => $year,
+					'week'            => $week,
+					'season_type'     => $season_type,
+					'date'            => $date,
 					'game_start_time' => $start_time_eastern,
-					'isotime' => $isotime,
-					'home_team' => $home_team,
-					'away_team' => $visitor_team,
+					'isotime'         => $isotime,
+					'home_team'       => $home_team,
+					'away_team'       => $visitor_team,
 					'home_team_score' => $home_team_score,
 					'away_team_score' => $visitor_team_score
 				)
 			);
+		}
+	}
+
+	public function save_season_to_db() {
+		$nfl_season = $this->create_nfl_season_array();
+
+		for ( $i = 0; $i <= 2; $i ++ ) {
+
+			$seasonType = $nfl_season[0][ $i ]['SeasonType'];
+			$year       = 2018;
 
 
+			for ( $ii = 1; $ii <= $nfl_season[0][ $i ]['length']; $ii ++ ) {
+				$week = $ii;
 
+
+				if ( $nfl_season[0][ $i ]['SeasonType'] == 'POST' ) {
+					$week     += 17;
+					$nfl_data = $this->get_week_json_file( $week, $year, $seasonType );
+				} else {
+					$nfl_data = $this->get_week_json_file( $week, $year, $seasonType );
+				}
+				$this->save_nfl_data_to_db( $nfl_data );
+			}
 		}
 	}
 }
