@@ -18,6 +18,7 @@ class Picksters_Model_Weekly_Picks {
 		$this->post_type = 'weekly_picks';
 		add_action( 'init', array( $this, 'create_weekly_picks_post_type' ) );
 		add_action( 'add_meta_boxes', array( $this, 'add_weekly_picks_meta_boxes' ) );
+		add_action( 'init', array( $this, 'process_picks' ) );
 	}
 
 	public function create_weekly_picks_post_type() {
@@ -50,44 +51,71 @@ class Picksters_Model_Weekly_Picks {
 		$html .= "<td><select class='widefat' name-'picksters_sticky_status'>";
 		$html .= "<option value='0'> <?php _e( 'Please Select', 'picksters' ); ?> </option>";
 
-    }
-
-public function get_current_week(){
-	$current_week = '2';
-	return $current_week;
-}
-
-public function get_current_season() {
-	$current_season = '2017';
-	return $current_season;
-}
-
-
-public function display_weekly_picks_forms() {
-	global $picksters_login_params;
-	if ( is_user_logged_in() ) {
-		include picksters_plugin_dir . 'templates/weekly-pick.php';
-	} else {
-		wp_redirect( home_url() );
 	}
-	exit;
-}
 
-public function get_weekly_games( $week, $seasonType, $year) {
-  global $wpdb;
-  $current_week = $this->get_current_week();
-  $current_season = $this->get_current_season();
+	public function get_current_week() {
 
-    $wpdb->show_errors();
-	$week_games_array = $wpdb->get_results(
-    	$wpdb->prepare(
-    	"SELECT home_team, away_team
-		FROM $wpdb->games
-		WHERE season = %d AND week = %d", $current_season, $current_week
-    ) );
+		//return $current_week;
+	}
 
-	$wpdb->print_error();
+	public function get_current_season() {
 
-  return $week_games_array;
-}
+		//return $current_season;
+	}
+
+
+	public function display_weekly_picks_forms() {
+		global $picksters_weekly_picks_params;
+		if ( is_user_logged_in() ) {
+			$week_games_array = $this->get_weekly_games( $week = 16, $seasonType = 'REG', $year = 2018 );
+			include picksters_plugin_dir . 'templates/weekly-pick.php';
+		} else {
+			wp_redirect( home_url() );
+		}
+		exit;
+	}
+
+	public function process_picks() {
+		global $picksters_weekly_picks_params, $picksters_login_params;
+
+		if ( $_POST['picksters_picks_submit'] ) {
+			$errors = array();
+			if ( is_user_logged_in() ) {
+				$picksters_weekly_picks_params['user_id'] = ( get_current_user_id() );
+			}
+
+
+			$how_many_games = $_POST['how_many_games'];
+			for ( $i = 1; $i <= $how_many_games; $i ++ ) {
+				${'game' . $i} = $_POST[ 'game' . $i ];
+
+				if ( empty( ${'game' . $i} ) ) {
+					array_push( $errors, __( 'Oops, you forgot to pick game #' . $i ) );
+				}
+			}
+
+			$picksters_weekly_picks_params['errors'] = $errors;
+
+
+		}
+	}
+
+	public function get_weekly_games( $week, $seasonType, $year ) {
+		global $wpdb;
+
+
+		$wpdb->show_errors();
+		$week_games_array[] = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT home_team, away_team
+		FROM wp_games
+		WHERE week = %s AND  season_type = %s  AND year = %s", $week, $seasonType, $year
+			), ARRAY_A );
+
+		$wpdb->print_error();
+
+		return $week_games_array;
+
+
+	}
 }

@@ -1,1 +1,173 @@
-{"season":2018,"seasonType":"POST","week":20,"gameScores":[{"gameSchedule":{"season":2018,"seasonType":"POST","week":20,"gameId":2019012000,"gameKey":57831,"gameDate":"01/20/2019","gameTimeEastern":"15:05:00","gameTimeLocal":"14:05:00","isoTime":1548014700000,"homeTeamId":"3300","visitorTeamId":"2510","homeTeamAbbr":"NO","visitorTeamAbbr":"LA","homeDisplayName":"New Orleans Saints","visitorDisplayName":"Los Angeles Rams","homeNickname":"Saints","visitorNickname":"Rams","gameType":"CON","visitorTeam":{"season":2018,"teamId":"2510","abbr":"LA","cityState":"Los Angeles Rams","fullName":"Los Angeles Rams","nick":"Rams","teamType":"TEAM","conferenceAbbr":"NFC","divisionAbbr":"NCW"},"homeTeam":{"season":2018,"teamId":"3300","abbr":"NO","cityState":"New Orleans","fullName":"New Orleans Saints","nick":"Saints","teamType":"TEAM","conferenceAbbr":"NFC","divisionAbbr":"NCS"},"site":{"siteId":2870,"siteCity":"New Orleans","siteFullname":"Mercedes-Benz Superdome","siteState":"LA","roofType":"INDOOR"}},"score":null},{"gameSchedule":{"season":2018,"seasonType":"POST","week":20,"gameId":2019012001,"gameKey":57832,"gameDate":"01/20/2019","gameTimeEastern":"18:40:00","gameTimeLocal":"17:40:00","isoTime":1548027600000,"homeTeamId":"2310","visitorTeamId":"3200","homeTeamAbbr":"KC","visitorTeamAbbr":"NE","homeDisplayName":"Kansas City Chiefs","visitorDisplayName":"New England Patriots","homeNickname":"Chiefs","visitorNickname":"Patriots","gameType":"CON","visitorTeam":{"season":2018,"teamId":"3200","abbr":"NE","cityState":"New England","fullName":"New England Patriots","nick":"Patriots","teamType":"TEAM","conferenceAbbr":"AFC","divisionAbbr":"ACE"},"homeTeam":{"season":2018,"teamId":"2310","abbr":"KC","cityState":"Kansas City","fullName":"Kansas City Chiefs","nick":"Chiefs","teamType":"TEAM","conferenceAbbr":"AFC","divisionAbbr":"ACW"},"site":{"siteId":1552,"siteCity":"Kansas City","siteFullname":"Arrowhead Stadium","siteState":"MO","roofType":"OUTDOOR"}},"score":null}]}
+{
+  "season": 2018,
+  "seasonType": "POST",
+  "week": 20,
+  "gameScores": [
+    {
+      "gameSchedule": {
+        "season": 2018,
+        "seasonType": "POST",
+        "week": 20,
+        "gameId": 2019012000,
+        "gameKey": 57831,
+        "gameDate": "01/20/2019",
+        "gameTimeEastern": "15:05:00",
+        "gameTimeLocal": "14:05:00",
+        "isoTime": 1548014700000,
+        "homeTeamId": "3300",
+        "visitorTeamId": "2510",
+        "homeTeamAbbr": "NO",
+        "visitorTeamAbbr": "LA",
+        "homeDisplayName": "New Orleans Saints",
+        "visitorDisplayName": "Los Angeles Rams",
+        "homeNickname": "Saints",
+        "visitorNickname": "Rams",
+        "gameType": "CON",
+        "visitorTeam": {
+          "season": 2018,
+          "teamId": "2510",
+          "abbr": "LA",
+          "cityState": "Los Angeles Rams",
+          "fullName": "Los Angeles Rams",
+          "nick": "Rams",
+          "teamType": "TEAM",
+          "conferenceAbbr": "NFC",
+          "divisionAbbr": "NCW"
+        },
+        "homeTeam": {
+          "season": 2018,
+          "teamId": "3300",
+          "abbr": "NO",
+          "cityState": "New Orleans",
+          "fullName": "New Orleans Saints",
+          "nick": "Saints",
+          "teamType": "TEAM",
+          "conferenceAbbr": "NFC",
+          "divisionAbbr": "NCS"
+        },
+        "site": {
+          "siteId": 2870,
+          "siteCity": "New Orleans",
+          "siteFullname": "Mercedes-Benz Superdome",
+          "siteState": "LA",
+          "roofType": "INDOOR"
+        }
+      },
+      "score": {
+        "time": "11:43",
+        "down": 0,
+        "yardsToGo": 0,
+        "yardline": null,
+        "yardlineSide": null,
+        "yardlineNumber": null,
+        "phase": "FINAL_OVERTIME",
+        "phaseDescription": "FINAL",
+        "possessionTeamId": "2510",
+        "possessionTeamAbbr": "LA",
+        "redZone": false,
+        "alertPlayType": null,
+        "visitorTeamScore": {
+          "pointTotal": 26,
+          "pointQ1": 0,
+          "pointQ2": 10,
+          "pointQ3": 7,
+          "pointQ4": 6,
+          "pointOT": 3,
+          "timeoutsRemaining": 2
+        },
+        "homeTeamScore": {
+          "pointTotal": 23,
+          "pointQ1": 13,
+          "pointQ2": 0,
+          "pointQ3": 7,
+          "pointQ4": 3,
+          "pointOT": 0,
+          "timeoutsRemaining": 2
+        }
+      }
+    },
+    {
+      "gameSchedule": {
+        "season": 2018,
+        "seasonType": "POST",
+        "week": 20,
+        "gameId": 2019012001,
+        "gameKey": 57832,
+        "gameDate": "01/20/2019",
+        "gameTimeEastern": "18:40:00",
+        "gameTimeLocal": "17:40:00",
+        "isoTime": 1548027600000,
+        "homeTeamId": "2310",
+        "visitorTeamId": "3200",
+        "homeTeamAbbr": "KC",
+        "visitorTeamAbbr": "NE",
+        "homeDisplayName": "Kansas City Chiefs",
+        "visitorDisplayName": "New England Patriots",
+        "homeNickname": "Chiefs",
+        "visitorNickname": "Patriots",
+        "gameType": "CON",
+        "visitorTeam": {
+          "season": 2018,
+          "teamId": "3200",
+          "abbr": "NE",
+          "cityState": "New England",
+          "fullName": "New England Patriots",
+          "nick": "Patriots",
+          "teamType": "TEAM",
+          "conferenceAbbr": "AFC",
+          "divisionAbbr": "ACE"
+        },
+        "homeTeam": {
+          "season": 2018,
+          "teamId": "2310",
+          "abbr": "KC",
+          "cityState": "Kansas City",
+          "fullName": "Kansas City Chiefs",
+          "nick": "Chiefs",
+          "teamType": "TEAM",
+          "conferenceAbbr": "AFC",
+          "divisionAbbr": "ACW"
+        },
+        "site": {
+          "siteId": 1552,
+          "siteCity": "Kansas City",
+          "siteFullname": "Arrowhead Stadium",
+          "siteState": "MO",
+          "roofType": "OUTDOOR"
+        }
+      },
+      "score": {
+        "time": "10:08",
+        "down": 0,
+        "yardsToGo": 0,
+        "yardline": null,
+        "yardlineSide": null,
+        "yardlineNumber": null,
+        "phase": "FINAL_OVERTIME",
+        "phaseDescription": "FINAL",
+        "possessionTeamId": "3200",
+        "possessionTeamAbbr": "NE",
+        "redZone": false,
+        "alertPlayType": null,
+        "visitorTeamScore": {
+          "pointTotal": 37,
+          "pointQ1": 7,
+          "pointQ2": 7,
+          "pointQ3": 3,
+          "pointQ4": 14,
+          "pointOT": 6,
+          "timeoutsRemaining": 3
+        },
+        "homeTeamScore": {
+          "pointTotal": 31,
+          "pointQ1": 0,
+          "pointQ2": 0,
+          "pointQ3": 7,
+          "pointQ4": 24,
+          "pointOT": 0,
+          "timeoutsRemaining": 3
+        }
+      }
+    }
+  ]
+}

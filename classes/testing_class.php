@@ -41,11 +41,12 @@ class testing_class {
 	 *
 	 * @return void
 	 */
-	public function display_data_template( $page_name = 'test', $week = 1, $year = 2018, $seasonType = 'REG' ) {
+	public function display_data_template( $page_name = 'test', $week = 1, $year = 2018, $seasonType = 'POST' ) {
 		global $picksters;
 
-		$json_data = $this->get_week_json_file( $week, $year, $seasonType );
 		$this->save_season_to_db();
+		$json_data = $this->get_week_json_file( $week, $year, $seasonType );
+
 		include picksters_plugin_dir . 'templates/' . $page_name . '.php';
 	}
 
@@ -68,7 +69,7 @@ class testing_class {
 			),
 			array(
 				'SeasonType' => 'POST',
-				'length'     => 3
+				'length'     => 5
 			)
 		);
 
