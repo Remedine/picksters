@@ -76,7 +76,7 @@ class Picksters_Model_Weekly_Picks {
 	}
 
 	public function process_picks() {
-		global $picksters_weekly_picks_params, $picksters_login_params;
+		global $picksters_weekly_picks_params;
 
 		if ( $_POST['picksters_picks_submit'] ) {
 			$errors = array();
@@ -84,11 +84,14 @@ class Picksters_Model_Weekly_Picks {
 				$picksters_weekly_picks_params['user_id'] = ( get_current_user_id() );
 			}
 
-
+			//make $Game[1-x] build variables dynamically depending upon how many games that week.
 			$how_many_games = $_POST['how_many_games'];
 			for ( $i = 1; $i <= $how_many_games; $i ++ ) {
 				${'game' . $i} = $_POST[ 'game' . $i ];
+				$picksters_weekly_picks_params['game' . $i ] = $_POST[ 'game' . $i ];
 
+
+				//push errors back to weekly picks template
 				if ( empty( ${'game' . $i} ) ) {
 					array_push( $errors, __( 'Oops, you forgot to pick game #' . $i ) );
 				}

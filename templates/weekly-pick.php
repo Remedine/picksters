@@ -46,13 +46,24 @@ get_header(); ?>
 
                 <li>
                     <label class='game_choice_label'>Game #<?php echo $how_many_games ?></label>
-                    <input class='picksters_radio_field' type='radio' id="picksters_radio_game<?php echo $i ?>"
+                    <input class='picksters_radio_field' type='radio' id="picksters_radio_game<?php echo $i ?> "
                            name='game<?php echo $how_many_games?>'
-                           value="<?php echo $week_games_array[0][ $i ]['home_team'] ?>"/>
+                           value="<?php echo $week_games_array[0][ $i ]['home_team'] ?>"
+                           <?php
+                           $ii = $i +1;
+                           if( isset($_POST['game' . $ii ]) && $_POST['game' . $ii ] == $week_games_array[0][ $i ]['home_team']) {
+                               echo 'checked="checked"';
+                           } ?>
+                    />
 					<?php echo $week_games_array[0][ $i ]['home_team'] ?> <br>
                     <input class='picksters_radio_field' type='radio' id="picksters_radio_game<?php echo $how_many_games ?>"
                            name="game<?php echo $how_many_games ?>"
-                           value="<?php echo $week_games_array[0][ $i ]['away_team'] ?>"/>
+                           value="<?php echo $week_games_array[0][ $i ]['away_team'] ?>"
+                            <?php
+                            if( isset($_POST['game' . $ii ]) && $_POST['game' . $ii ] == $week_games_array[0][ $i ]['away_team']) {
+                                echo 'checked="checked"';
+                            } ?>
+                    />
 					<?php echo $week_games_array[0][ $i ]['away_team'] ?>
                     <input type="hidden" name="how_many_games" value="<?php echo $how_many_games ?>" />
                 </li>
