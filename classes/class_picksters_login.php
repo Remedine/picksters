@@ -75,7 +75,7 @@ class Picksters_Login {
 				$activate_status = '';
 				$activate_status = get_user_meta( $user->data->ID, 'picksters_activation_status', true );
 				if ('inactive' == $activate_status ){
-					$user = new \WP_Error( 'denied', __('<strong>ERROR</strong>: Please activeate your account.', 'picksters' ) );
+					$user = new \WP_Error( 'denied', __('<strong>ERROR</strong>: Please activate your account.', 'picksters' ) );
 				}
 			}
 		}
