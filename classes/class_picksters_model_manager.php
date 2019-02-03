@@ -19,7 +19,7 @@ class Picksters_Model_Manager {
 		extract( $params );
 
 		$capabilities = isset( $capabilities ) ? $capabilities : array();
-		$labels = array(
+		$labels       = array(
 			'name'               => sprintf( __( '%s', 'picksters' ), $plural_post_name ),
 			'singular_name'      => sprintf( __( '%s', 'picksters' ), $singular_post_name ),
 			'add_new'            => __( 'Add New', 'picksters' ),
@@ -92,5 +92,35 @@ class Picksters_Model_Manager {
 				'capabilities' => $capabilities,
 			)
 		);
+	}
+
+	public function generate_messages( $messages, $params ) {
+		global $post, $post_ID;
+		extract( $params );
+
+
+		$error_message = get_transient( $post_type . "_error_message_$post->ID" );
+
+
+		if (  empty( $error_message ) ) {
+			$messages[ $post_type ] = array();
+		} else {
+			$messages[ $post_type ] = array(
+				0  => '', //unused. Messages start at index 1.
+				1  => sprintf( __( '%1$s updated. <a href="%2$s">View %3$s</a>', 'picksters' ), $singular_name, esc_url( get_permalink( $post_ID ) ), $singular_name ),
+				2  => __( 'Picks updated.', 'picksters' ),
+				3  => __( 'Picks deleted', 'picksters' ),
+				4  => sprintf( __( '%1$s updated', 'picksters' ), $singular_name ),
+				5  => isset( $_GET['revision'] ) ? sprintf( __( '%1$s restored to revision from %2$s', 'picksters' ), $singular_name, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+				6  => sprintf( __( '%1$s published. <a href="%2$s">View %3$s</a>', 'picksters' ), $singular_name, esc_url( get_permalink( $post_ID ) ), $singular_name ),
+				7  => sprintf( __( '%1$s saved', 'picksters' ), $singular_name ),
+				8  => sprintf( __( '%1$s submitted. <a target="_blank" href="%2$s">Preview %3$s</a>', 'picksters' ), $singular_name, esc_url( add_query_arg( 'preview', true, get_permalink( $post_ID ) ) ), $singular_name ),
+				9  => sprintf( __( '%1$s scheduled for: <strong>%2$s</strong>. <a target="_blank" href="%3$s">Preview %4$s</a>', 'picksters' ), $singular_name, date_i18n( __( 'M j, Y $ G:i' ), strtotime( $post->post_date ) ),
+					esc_url( get_permalink( $post_ID ) ), $singular_name ),
+				10 => sprintf(__('%1$s draft updated. <a target="_blank" href="%2$s">Preview %3$s</a>','picksters'), $singular_name, esc_url(add_query_arg('preview', 'true', get_permalink($post_ID))), $singular_name),
+			);
+		}
+
+		return $$messages;
 	}
 }

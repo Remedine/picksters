@@ -19,6 +19,9 @@ class Picksters_Model_Weekly_Picks {
 		add_action( 'init', array( $this, 'create_weekly_picks_post_type' ) );
 		add_action( 'add_meta_boxes', array( $this, 'add_weekly_picks_meta_boxes' ) );
 		add_action( 'init', array( $this, 'process_picks' ) );
+		add_action( 'save_post', array( $this, 'save_weekly_picks_meta_data' ) );
+		add_filter( 'post_updated_messages', array( $this, 'display_errors_weekly_picks_meta' ) );
+		add_action( 'admin_notices', array( $this, 'weekly_picks_admin_notices' ) );
 	}
 
 	public function create_weekly_picks_post_type() {
@@ -44,36 +47,89 @@ class Picksters_Model_Weekly_Picks {
 
 
 	public function display_weekly_picks_meta_boxes() {
-		global $post;
+		global $picksters, $post, $picksters_weekly_picks_params, $week_games_array;
 
-		/*
-		$html = "<table class='form-table'>";
-		$html .= "<tr>";
-		$html .= "<th ><label><?php _e('Sticky Status','picksters');
-			?>*</label></th>";
-		$html .= "<td><select class='widefat' name='picksters_sticky_status'
-			id='picksters_sticky_status'>";
-		$html .= "<option value='0' ><?php _e('Please Select','picksters');
-			?></option>";
-		$html .= "<option value='normal' ><?php _e('Normal','picksters'); ?>
-			</option>";
-		$html .= "<option value='super_sticky' ><?php _e('Super
-			Sticky','picksters'); ?></option>";
-		$html .= "<option value='sticky' ><?php _e('Sticky','picksters');
-			?></option>";
-		$html .= "</select></td>";
-		$html .= "</tr>";
-		$html .= "<tr>";
-		$html .= "<th ><label><?php _e('Topic Files','picksters');
-			?></label></th>";
-		$html .= "<td><input class='widefat' name='picksters_files'
-			id='picksters_files' type='file' value='' /></td>";
-		$html .= "</tr>";
-		$html .= "</table>";
-		echo $html;
-*/
+
+		$week_games_array = $this->get_weekly_games( $week = 15, $seasonType = 'REG', $year = 2018 );
+		$picksters_weekly_picks_params['$this->post_type'];
+		$picksters_weekly_picks_params['weekly_picks_meta_nonce'] = wp_create_nonce( 'picksters_weekly_picks_meta_nonce' );
+		//ob_start();
+		//$picksters->template_loader->get_template_part( 'weekly-pick', 'meta');
+		require_once( picksters_plugin_dir . 'templates/weekly-pick-meta-template.php' );
+		//$display= ob_get_clean();
+		//echo $display;
+	}
+
+	public function save_weekly_picks_meta_data() {
+		global $post, $picksters;
+		if ( isset( $_POST['weekly_picks_meta_nonce'] ) && ! wp_verify_nonce( $_POST['weekly_picks_meta_nonce'], "picksters_weekly_picks_meta_nonce" ) ) {
+			return $post->ID;
+		}
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return $post->ID;
+		}
+		if ( isset( $_POST['post_type'] ) && $this->post_type == $_POST['post_type'] /* && current_user_can( 'edit_picksters_weekly_picks', $post->ID ) */ ) {
+			//Implement the validations and data saving
+			//Section 1 - validation and sanitation
+			$errors             = array();
+			$how_many_games     = sanitize_text_field( trim( $_POST['how_many_games'] ) );
+			$picked_games_array = array();
+			for ( $i = 1; $i <= $how_many_games; $i ++ ) {
+				${'game' . $i} = $_POST[ 'game' . $i ];
+				//push errors back to weekly picks template
+				if ( empty( ${'game' . $i} ) ) {
+					array_push( $errors, __( 'Oops, you forgot to pick game #' . $i ) );
+				}
+				//sanitize user submission and save to array
+				$picked_games_array[ 'game' . $i ] = sanitize_text_field( trim( ${'game' . $i} ) );
+			}
+		}
+		//Section 2 -  save if no errors, remove post save and set to draft pass errors as transient
+		if ( ! empty( $errors ) ) {
+			remove_action( 'save_post', array( $this, 'save_weekly_picks_meta_data' ) );
+			$post->post_status = 'draft';
+			$post->post_title  = isset( $_POST['post_title'] ) ? sanitize_text_field( $_POST['post_title'] ) : '';
+			wp_update_post( $post );
+			add_action( 'save_post', array( $this, 'save_weekly_picks_meta_data' ) );
+			set_transient( $this->post_type . "_error_message_$post->ID", $errors, 60 * 10 );
+		} else {
+			update_post_meta( $post->ID, 'Weekly_picks', $picked_games_array );
+		}
 
 	}
+
+	public function display_errors_weekly_picks_meta( $messages ) {
+		global $picksters;
+
+		$params                  = array();
+		$params['post_type']     = $this->post_type;
+		$params['singular_name'] = __( 'Weekly Picks', 'picksters' );
+		$params['plural_name']   = __( 'Weekly Picks', 'picksters' );
+		$messages                = $picksters->model_manager->generate_messages( $messages, $params );
+
+		return $messages;
+	}
+
+	public function weekly_picks_admin_notices() {
+		global $post;
+		$temp_error_message = get_transient( $this->post_type."_error_message_$post->ID");
+		delete_transient( $this->post_type."_error_message_$post->ID" );
+		if( !($temp_error_message)) {
+			return;
+		}
+
+
+		$how_many_games = count($temp_error_message);
+		for ( $i = 0; $i <= $how_many_games; $i ++ ) {
+			$message .= '<div id="picksters_errors" class="error below-h2"><p>' . $temp_error_message[$i] . '</p></div>';
+		}
+
+
+
+		echo $message;
+		remove_action( 'admin_notices', array( $this, 'weekly_picks_admin_notices'));
+	}
+
 
 	public function get_current_week() {
 
@@ -140,7 +196,7 @@ class Picksters_Model_Weekly_Picks {
 		global $wpdb;
 
 
-		$wpdb->show_errors();
+		//$wpdb->show_errors();
 		$week_games_array[] = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT home_team, away_team
@@ -148,7 +204,7 @@ class Picksters_Model_Weekly_Picks {
 		WHERE week = %s AND  season_type = %s  AND year = %s", $week, $seasonType, $year
 			), ARRAY_A );
 
-		$wpdb->print_error();
+		//$wpdb->print_error();
 
 		return $week_games_array;
 
