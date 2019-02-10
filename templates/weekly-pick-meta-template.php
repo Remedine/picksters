@@ -21,7 +21,6 @@ if ( is_array( $picksters_weekly_picks_params ) ) {
 
 $picked_games_array = get_transient( $this->post_type . "_games_$post->ID");
 delete_transient( $this->post_type . "_games_$post->ID" );
-d($picked_games_array, $week_games_array);
 ?>
 
 <input type="hidden" name="weekly-picks-meta-nonce" value="<?php echo $picksters_weekly_picks_params['weekly_picks_meta_nonce']; ?>"/>

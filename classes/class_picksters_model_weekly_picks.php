@@ -92,7 +92,7 @@ class Picksters_Model_Weekly_Picks {
 			$post->post_title  = isset( $_POST['post_title'] ) ? sanitize_text_field( $_POST['post_title'] ) : '';
 			wp_update_post( $post );
 			add_action( 'save_post', array( $this, 'save_weekly_picks_meta_data' ) );
-			set_transient( $this->post_type . "_games_$post->ID", $picked_games_array, 600 * 10 );
+			set_transient( $this->post_type . "_games_$post->ID", $picked_games_array, 60 * 10 );
 			set_transient( $this->post_type . "_error_message_$post->ID", $errors, 60 * 10 );
 		} else {
 			update_post_meta( $post->ID, 'Weekly_picks', $picked_games_array );
