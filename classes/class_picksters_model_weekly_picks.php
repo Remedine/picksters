@@ -79,6 +79,7 @@ class Picksters_Model_Weekly_Picks {
 				//push errors back to weekly picks template
 				if ( empty( ${'game' . $i} ) ) {
 					array_push( $errors, __( 'Oops, you forgot to pick game #' . $i ) );
+
 				}
 				//sanitize user submission and save to array
 				$picked_games_array[ 'game' . $i ] = sanitize_text_field( trim( ${'game' . $i} ) );
@@ -91,6 +92,7 @@ class Picksters_Model_Weekly_Picks {
 			$post->post_title  = isset( $_POST['post_title'] ) ? sanitize_text_field( $_POST['post_title'] ) : '';
 			wp_update_post( $post );
 			add_action( 'save_post', array( $this, 'save_weekly_picks_meta_data' ) );
+			set_transient( $this->post_type . "_games_$post->ID", $picked_games_array, 600 * 10 );
 			set_transient( $this->post_type . "_error_message_$post->ID", $errors, 60 * 10 );
 		} else {
 			update_post_meta( $post->ID, 'Weekly_picks', $picked_games_array );
@@ -117,16 +119,14 @@ class Picksters_Model_Weekly_Picks {
 		if( !($temp_error_message)) {
 			return;
 		}
-
-
 		$how_many_games = count($temp_error_message);
 		for ( $i = 0; $i <= $how_many_games; $i ++ ) {
 			$message .= '<div id="picksters_errors" class="error below-h2"><p>' . $temp_error_message[$i] . '</p></div>';
 		}
 
-
-
-		echo $message;
+		if( !empty($message)) {
+			echo $message;
+		};
 		remove_action( 'admin_notices', array( $this, 'weekly_picks_admin_notices'));
 	}
 
@@ -178,7 +178,7 @@ class Picksters_Model_Weekly_Picks {
 
 				//push errors back to weekly picks template
 				if ( empty( ${'game' . $i} ) ) {
-					array_push( $errors, __( 'Oops, you forgot to pick game #' . $i ) );
+					array_push( $errors, __( '*Oops, you forgot to pick game #' . $i ) );
 				}
 			}
 

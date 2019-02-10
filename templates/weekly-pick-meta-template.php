@@ -13,10 +13,15 @@ namespace ExecutiveSuiteIt\Picksters\Templates;
 
 global $picksters_weekly_picks_params;
 
+
+
 if ( is_array( $picksters_weekly_picks_params ) ) {
 	extract( $picksters_weekly_picks_params );
 }
 
+$picked_games_array = get_transient( $this->post_type . "_games_$post->ID");
+delete_transient( $this->post_type . "_games_$post->ID" );
+d($picked_games_array, $week_games_array);
 ?>
 
 <input type="hidden" name="weekly-picks-meta-nonce" value="<?php echo $picksters_weekly_picks_params['weekly_picks_meta_nonce']; ?>"/>
@@ -40,11 +45,25 @@ if ( is_array( $picksters_weekly_picks_params ) ) {
             <td>
                 <input class='picksters_radio_field' type='radio' id="picksters_radio_game<?php echo $i ?> "
                        name='game<?php echo $how_many_games?>'
-                       value="<?php echo $week_games_array[0][ $i ]['home_team'] ?>"/>
+                       value="<?php echo $week_games_array[0][ $i ]['home_team'];?>"
+                       <?php
+                       $ii = $i +1;
+                       if( ! empty ($picked_games_array['game' . $ii ]) && $picked_games_array['game' . $ii ] == $week_games_array[0][ $i ]['home_team']) {
+                           echo 'checked="checked"';
+                       }
+                       ?>
+                />
 	            <?php echo $week_games_array[0][ $i ]['home_team'] ?>
                 <input class='picksters_radio_field' type='radio' id="picksters_radio_game<?php echo $how_many_games ?>"
                        name="game<?php echo $how_many_games ?>"
-                       value="<?php echo $week_games_array[0][ $i ]['away_team'] ?>"/>
+                       value="<?php echo $week_games_array[0][ $i ]['away_team'];?>"
+                       <?php
+                       $ii = $i +1;
+                       if( ! empty ($picked_games_array['game' . $ii ]) && $picked_games_array['game' . $ii ] == $week_games_array[0][ $i ]['away_team']) {
+                           echo 'checked="checked"';
+                       }
+                       ?>
+                />
 	            <?php echo $week_games_array[0][ $i ]['away_team'] ?>
             </td>
         </tr>
