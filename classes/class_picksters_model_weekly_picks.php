@@ -78,8 +78,7 @@ class Picksters_Model_Weekly_Picks {
 				${'game' . $i} = $_POST[ 'game' . $i ];
 				//push errors back to weekly picks template
 				if ( empty( ${'game' . $i} ) ) {
-					array_push( $errors, __( 'Oops, you forgot to pick game #' . $i ) );
-
+					array_push( $errors, __( '*Hey, don\'t forget to pick game #' . $i . '!' ) );
 				}
 				//sanitize user submission and save to array
 				$picked_games_array[ 'game' . $i ] = sanitize_text_field( trim( ${'game' . $i} ) );
@@ -145,7 +144,7 @@ class Picksters_Model_Weekly_Picks {
 	public function display_weekly_picks_forms() {
 		global $picksters_weekly_picks_params;
 		if ( is_user_logged_in() ) {
-			$week_games_array = $this->get_weekly_games( $week = 16, $seasonType = 'REG', $year = 2018 );
+			$week_games_array = $this->get_weekly_games( $week = 3, $seasonType = 'REG', $year = 2019 );
 			include picksters_plugin_dir . 'templates/weekly-pick.php';
 		} else {
 			wp_redirect( home_url() );
