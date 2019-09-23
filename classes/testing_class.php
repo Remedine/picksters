@@ -53,17 +53,6 @@ class testing_class {
 		include picksters_plugin_dir . 'templates/' . $page_name . '.php';
 	}
 
-	public function get_json_data_from_source( $year, $seasonType, $week ) {
-		$json_feed = @file_get_contents( 'http://www.nfl.com/feeds-rs/scores/' . $year . '/' . $seasonType . '/' . $week . '.json' );
-		if ($json_feed === false) {
-			return;
-		}
-		else {
-			return $json_feed;
-		}
-
-	}
-
 	public function create_nfl_season_array() {
 
 		$nfl_season[] = array(
@@ -82,6 +71,16 @@ class testing_class {
 		);
 
 		return $nfl_season;
+	}
+
+	public function get_json_data_from_source( $year, $seasonType, $week ) {
+		$json_feed = @file_get_contents( 'http://www.nfl.com/feeds-rs/scores/' . $year . '/' . $seasonType . '/' . $week . '.json' );
+		if ($json_feed === false) {
+			return;
+		}
+		else {
+			return $json_feed;
+		}
 	}
 
 	public function save_json_data() {

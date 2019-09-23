@@ -77,6 +77,7 @@ if ( ! class_exists( 'picksters' ) ) {
 		}
 
 		public function load_scripts() {
+
 		}
 
 		public function load_admin_scripts() {
