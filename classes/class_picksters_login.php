@@ -22,7 +22,7 @@ class Picksters_Login {
 	public function display_login_form() {
 		global $picksters_weekly_games;
 		if ( ! is_user_logged_in() ) {
-			include picksters_plugin_dir . 'templates/login-templates.php';
+			include picksters_plugin_dir . 'templates/login-template.php';
 		} else {
 			wp_redirect( home_url() );
 		}
