@@ -55,6 +55,7 @@ if ( ! class_exists( 'picksters' ) ) {
 				self::$instance->six_picks       = new Picksters_Model_Six_Picks();
 				self::$instance->jsonhandler     = new jsonhandler();
 				self::$instance->test            = new testing_class();
+				self::$instance->content_restrictions = new Classes\class_picksters_content_restrictions();
 
 				register_activation_hook( __FILE__, array( self::$instance->config_manager, 'activation_handler' ) );
 
@@ -94,6 +95,7 @@ if ( ! class_exists( 'picksters' ) ) {
 			require_once picksters_plugin_dir . 'classes/class_picksters_model_six_picks.php';
 			require_once picksters_plugin_dir . 'classes/helper/class_jsonhelper.php';
 			require_once picksters_plugin_dir . 'classes/testing_class.php';
+			require_once picksters_plugin_dir . 'classes/class_picksters_content_restrictions.php';
 		}
 
 		public function load_textdomain() {
