@@ -70,17 +70,27 @@ class class_picksters_content_restrictions {
 	}
 
 	//this is for content restrictions based upon topic restrictions
-	public  function add_topic_restriction_box() {
+	public function add_topic_restriction_box() {
 		global $picksters;
-		if ( current_user_can( 'manage_options' )){
+		if ( current_user_can( 'manage_options' ) ) {
 			add_meta_box(
 				'picksters-restrictions',
-				__( 'Restriction Settings', 'picksters'),
-				array( $this, 'add_pickster_restrictions'),
+				__( 'Restriction Settings', 'picksters' ),
+				array( $this, 'add_pickster_restrictions' ),
 				$picksters->picks->post_type,
 				'normal',
 				'low' );
 		}
+	}
+
+	public function add_picksters_restrictions( $post ) {
+		global $picksters, $picksters_restriction_params;
+		$picksters_restriction_params['post'] = $post;
+		ob_start();
+		$picksters->template_loader->get_template_part( 'picksters-restriction-meta');
+
+		$display = ob_get_clean();
+		echo $display;
 	}
 
 }
