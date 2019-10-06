@@ -89,7 +89,6 @@ if ( ! class_exists( 'picksters' ) ) {
 			require_once picksters_plugin_dir . 'classes/class_picksters_registration.php';
 			require_once picksters_plugin_dir . 'classes/class_picksters_login.php';
 			require_once picksters_plugin_dir . 'functions.php';
-			require_once picksters_plugin_dir . 'classes/class_picksters_template_loader.php';
 			require_once picksters_plugin_dir . 'classes/class_picksters_model_manager.php';
 			require_once picksters_plugin_dir . 'classes/class_picksters_model_weekly_picks.php';
 			require_once picksters_plugin_dir . 'classes/class_picksters_model_six_picks.php';

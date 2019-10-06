@@ -209,4 +209,5 @@ class Picksters_Model_Weekly_Picks {
 
 
 	}
+
 }

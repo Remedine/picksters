@@ -88,7 +88,7 @@ class class_picksters_content_restrictions {
 		global $picksters, $picksters_restriction_params;
 		$picksters_restriction_params['post'] = $post;
 		ob_start();
-		$picksters->template_loader->get_template_part( 'picksters-restriction-meta' );
+		$picksters->template_loader->get_template_part( 'restriction-meta' );
 
 		$display = ob_get_clean();
 		echo $display;

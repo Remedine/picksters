@@ -25,7 +25,7 @@ class testing_class {
 			return $json_data;
 		}
 		else {
-			$this->save_json_data();
+			$this->save_json_season_data();
 		}
 	}
 
@@ -176,4 +176,23 @@ class testing_class {
 			}
 		}
 	}
+	
+	//function to retrieve latest Json data
+    public function update_week_data($year, $season, $week) {
+        global $picksters;
+
+
+
+
+
+        // compare the data
+
+
+
+
+
+    }
+    //function to compare two json file and replace the old with the new
+    
+    //
 }
