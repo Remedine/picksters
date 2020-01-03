@@ -47,14 +47,14 @@ class Picksters_Model_Weekly_Picks {
 
 
 	public function display_weekly_picks_meta_boxes() {
-		global $picksters, $post, $picksters_weekly_picks_params, $week_games_array;
+		global $picksters, $post, $picksters_weekly_picks_params, $week_games_array, $digital_seeds_template_loader;
 
 
 		$week_games_array = $this->get_weekly_games( $week = 15, $seasonType = 'REG', $year = 2018 );
 		$picksters_weekly_picks_params['$this->post_type'];
 		$picksters_weekly_picks_params['weekly_picks_meta_nonce'] = wp_create_nonce( 'picksters_weekly_picks_meta_nonce' );
 		//ob_start();
-		//$picksters->template_loader->get_template_part( 'weekly-pick', 'meta');
+		$digital_seeds_template_loader->get_template_part( 'weekly-pick', 'meta');
 		require_once( picksters_plugin_dir . 'templates/weekly-pick-meta-template.php' );
 		//$display= ob_get_clean();
 		//echo $display;

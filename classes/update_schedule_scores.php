@@ -2,7 +2,7 @@
 /**
  * Description.
  *
- * @package ExecutiveSuiteIt\Picksters\Classes
+ * @package ${namespace}
  * @Since 1.0.0
  * @author Timothy Hill
  * @link https://executivesuiteit.com
@@ -12,9 +12,9 @@
 namespace ExecutiveSuiteIt\Picksters\Classes;
 
 
-class testing_class {
+class update_schedule_scores {
 
-	//load data file
+	//load data file for a single week
 	public function get_week_json_file( $week, $year, $seasonType ) {
 		global $picksters;
 		$file = picksters_plugin_dir . 'assets/jsondata/' . $year . '/' . $seasonType . '_' . $week . '.json';
@@ -25,34 +25,36 @@ class testing_class {
 			return $json_data;
 		}
 		else {
-			$this->save_json_season_data();
+			$this->save_json_data();
 		}
 	}
 
-	/**
-	 * Displays the template file with the data loaded for the week being picked.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param $page_name is the file name for the template without the path or .php at the end
-	 *
-	 * @param $week is the week for which the data should be loaded
-	 *
-	 * @param $year is the year for the sport being picked
-	 *
-	 * @param $seasonType should be 'PRE' 'REG' or 'POST'
-	 *
-	 * @return void
-	 */
-	public function display_data_template( $page_name = 'test', $week = 1, $year = 2019, $seasonType = 'REG' ) {
-		global $picksters;
+	//this function is designed to fetch the entire season/schedule and save it to the database
+	public function save_season_to_db() {
+		$nfl_season = $this->create_nfl_season_array();
 
-		//$this->save_season_to_db();
-		$json_data = $this->get_week_json_file( $week, $year, $seasonType );
+		for ( $i = 0; $i <= 2; $i ++ ) {
 
-		include picksters_plugin_dir . 'templates/' . $page_name . '.php';
+			$seasonType = $nfl_season[0][ $i ]['SeasonType'];
+			$year       = 2019;
+
+
+			for ( $ii = 1; $ii <= $nfl_season[0][ $i ]['length']; $ii ++ ) {
+				$week = $ii;
+
+
+				if ( $nfl_season[0][ $i ]['SeasonType'] == 'POST' ) {
+					$week     += 17;
+					$nfl_data = $this->get_week_json_file( $week, $year, $seasonType );
+				} else {
+					$nfl_data = $this->get_week_json_file( $week, $year, $seasonType );
+				}
+				$this->save_nfl_data_to_db( $nfl_data );
+			}
+		}
 	}
 
+	//a helper function used in saving_nfl_data_to_db() function
 	public function create_nfl_season_array() {
 
 		$nfl_season[] = array(
@@ -73,45 +75,7 @@ class testing_class {
 		return $nfl_season;
 	}
 
-	public function get_json_data_from_source( $year, $seasonType, $week ) {
-		$json_feed = @file_get_contents( 'http://www.nfl.com/feeds-rs/scores/' . $year . '/' . $seasonType . '/' . $week . '.json' );
-		if ($json_feed === false) {
-			return;
-		}
-		else {
-			return $json_feed;
-		}
-	}
-
-	public function save_json_data() {
-		$nfl_season = $this->create_nfl_season_array();
-
-		for ( $i = 0; $i <= 2; $i ++ ) {
-
-			$seasonType = $nfl_season[0][ $i ]['SeasonType'];
-			$year       = 2018;
-
-
-			for ( $ii = 1; $ii <= $nfl_season[0][ $i ]['length']; $ii ++ ) {
-				$week = $ii;
-
-
-				if ( $nfl_season[0][ $i ]['SeasonType'] == 'POST' ) {
-					$week     += 17;
-					$nfl_data = $this->get_json_data_from_source( $year, $seasonType, $week );
-
-				} else {
-					$nfl_data = $this->get_json_data_from_source( $year, $seasonType, $week );
-				}
-				if ($nfl_data == null) {
-				}
-				else {
-					file_put_contents( picksters_plugin_dir . 'assets/jsondata/' . $year . '/' . $seasonType . '_' . $week . '.json', $nfl_data );
-				}
-			}
-		}
-	}
-
+	//a helper function used in saving_nfl_data_to_db() function
 	public function save_nfl_data_to_db( $json_data ) {
 
 		for ( $i = 0; $i <= 19; $i ++ ) {
@@ -153,13 +117,25 @@ class testing_class {
 		}
 	}
 
-	public function save_season_to_db() {
+	//retrieves the json data from NFL live website
+	public function get_json_data_from_source( $year, $seasonType, $week ) {
+		$json_feed = @file_get_contents( 'http://www.nfl.com/feeds-rs/scores/' . $year . '/' . $seasonType . '/' . $week . '.json' );
+		if ($json_feed === false) {
+			return;
+		}
+		else {
+			return $json_feed;
+		}
+	}
+
+	//check for json files and if none retrieves it
+	public function save_json_data() {
 		$nfl_season = $this->create_nfl_season_array();
 
 		for ( $i = 0; $i <= 2; $i ++ ) {
 
 			$seasonType = $nfl_season[0][ $i ]['SeasonType'];
-			$year       = 2019;
+			$year       = 2018;
 
 
 			for ( $ii = 1; $ii <= $nfl_season[0][ $i ]['length']; $ii ++ ) {
@@ -168,29 +144,44 @@ class testing_class {
 
 				if ( $nfl_season[0][ $i ]['SeasonType'] == 'POST' ) {
 					$week     += 17;
-					$nfl_data = $this->get_week_json_file( $week, $year, $seasonType );
+					$nfl_data = $this->get_json_data_from_source( $year, $seasonType, $week );
+
 				} else {
-					$nfl_data = $this->get_week_json_file( $week, $year, $seasonType );
+					$nfl_data = $this->get_json_data_from_source( $year, $seasonType, $week );
 				}
-				$this->save_nfl_data_to_db( $nfl_data );
+				if ($nfl_data == null) {
+				}
+				else {
+					file_put_contents( picksters_plugin_dir . 'assets/jsondata/' . $year . '/' . $seasonType . '_' . $week . '.json', $nfl_data );
+				}
 			}
 		}
 	}
-	
-	//function to retrieve latest Json data
-    public function update_week_data($year, $season, $week) {
-
-    }
-
-    //function to compare two json file and replace the old with the new
-    public function compare_week_data($year, $season, $week) {
-        global $picksters;
-
-        //get the data from the source and from our stored file
-        $this->get_json_data_from_source( $year, $season, $week );
-        $this->get_week_json_file( $week, $year, $season );
 
 
-    }
-    //
+
+	/**
+	 * Displays the template file with the data loaded for the week being picked.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param $page_name is the file name for the template without the path or .php at the end
+	 *
+	 * @param $week is the week for which the data should be loaded
+	 *
+	 * @param $year is the year for the sport being picked
+	 *
+	 * @param $seasonType should be 'PRE' 'REG' or 'POST'
+	 *
+	 * @return void
+	 */
+	public function display_data_template( $page_name = 'test', $week = 1, $year = 2019, $seasonType = 'REG' ) {
+		global $picksters;
+
+		$this->save_season_to_db();
+		$json_data = $this->get_week_json_file( $week, $year, $seasonType );
+
+		include picksters_plugin_dir . 'templates/' . $page_name . '.php';
+	}
+
 }

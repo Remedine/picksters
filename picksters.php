@@ -23,7 +23,7 @@ use ExecutiveSuiteIt\Picksters\Classes\Picksters_Login;
 use ExecutiveSuiteIt\Picksters\Classes\Picksters_Model_Manager;
 use ExecutiveSuiteIt\picksters\classes\Picksters_Model_Weekly_Picks;
 use ExecutiveSuiteIt\Picksters\Classes\Picksters_Registration;
-use ExecutiveSuiteIt\Picksters\Classes\Picksters_Template_Loader;
+//use ExecutiveSuiteIt\Picksters\Classes\Picksters_Template_Loader;
 use ExecutiveSuiteIt\Picksters\Classes\Picksters_Model_Six_Picks;
 use ExecutiveSuiteIt\Picksters\Classes\testing_class;
 
@@ -49,7 +49,7 @@ if ( ! class_exists( 'picksters' ) ) {
 				self::$instance->config_manager  = new Picksters_Config_Manager();
 				self::$instance->registration    = new Picksters_Registration();
 				self::$instance->login           = new Picksters_Login();
-				self::$instance->template_loader = new Picksters_Template_Loader();
+				//self::$instance->template_loader = new Picksters_Template_Loader();
 				self::$instance->model_manager   = new Picksters_Model_Manager();
 				self::$instance->weekly_picks    = new Picksters_Model_Weekly_Picks();
 				self::$instance->six_picks       = new Picksters_Model_Six_Picks();
@@ -66,7 +66,8 @@ if ( ! class_exists( 'picksters' ) ) {
 		}
 
 		public function setup_constants() {
-			if ( ! defined( 'picksers_version' ) ) {
+            global $digital_seeds_template_loader;
+			if ( ! defined( 'picksters_version' ) ) {
 				define( 'picksters_version', '1.0' );
 			}
 			if ( ! defined( 'picksters_plugin_dir' ) ) {
@@ -75,6 +76,8 @@ if ( ! class_exists( 'picksters' ) ) {
 			if ( ! defined( 'picksters_plugin_url' ) ) {
 				define( 'picksters_plugin_url', plugin_dir_url( __FILE__ ) );
 			}
+
+			$digital_seeds_template_loader->set_plugin_path(picksters_plugin_dir);
 		}
 
 		public function load_scripts() {
@@ -89,6 +92,7 @@ if ( ! class_exists( 'picksters' ) ) {
 			require_once picksters_plugin_dir . 'classes/class_picksters_registration.php';
 			require_once picksters_plugin_dir . 'classes/class_picksters_login.php';
 			require_once picksters_plugin_dir . 'functions.php';
+			//require_once picksters_plugin_dir . 'classes/class_picksters_template_loader.php';
 			require_once picksters_plugin_dir . 'classes/class_picksters_model_manager.php';
 			require_once picksters_plugin_dir . 'classes/class_picksters_model_weekly_picks.php';
 			require_once picksters_plugin_dir . 'classes/class_picksters_model_six_picks.php';
@@ -102,6 +106,8 @@ if ( ! class_exists( 'picksters' ) ) {
 
 
 	}
+
+
 
 	function picksters() {
 		global $picksters;
