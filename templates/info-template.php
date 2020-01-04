@@ -4,5 +4,8 @@
 	<div id='picksters_info_message'>
 		<?php echo $message; ?>
 	</div>
+    <div>
+        <p></p>
+    </div>
 </div>
 <?php get_footer(); ?>

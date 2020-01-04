@@ -27,6 +27,12 @@ use ExecutiveSuiteIt\Picksters\Classes\Picksters_Registration;
 use ExecutiveSuiteIt\Picksters\Classes\Picksters_Model_Six_Picks;
 use ExecutiveSuiteIt\Picksters\Classes\testing_class;
 
+
+// Validating existence of required plugins
+if (! defined ('digital_seeds_tmpl_path')) {
+	echo '<div class="error"><p><strong>Picksters</strong> requires<strong>Digital Seeds Template Loader</strong> plugin to function properly.</p></div>';
+}
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit( 'Cheating?' );
 }
@@ -44,6 +50,7 @@ if ( ! class_exists( 'picksters' ) ) {
 
 				add_action( 'admin_enqueue_scripts', array( self::$instance, 'load_admin_scripts' ), 9 );
 				add_action( 'wp_enqueue_scripts', array( self::$instance, 'load_scripts' ), 9 );
+
 
 				//Class object initialization
 				self::$instance->config_manager  = new Picksters_Config_Manager();
@@ -64,6 +71,8 @@ if ( ! class_exists( 'picksters' ) ) {
 			return self::$instance;
 
 		}
+
+
 
 		public function setup_constants() {
             global $digital_seeds_template_loader;

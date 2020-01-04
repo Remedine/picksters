@@ -142,6 +142,7 @@ class Picksters_Config_Manager {
 				do_action( 'picksters_before_template');
 				$picksters->test->display_data_template();
 				do_action( 'picksters_after_template');
+				break;
 
 			default:
 				break;
