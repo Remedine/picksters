@@ -55,9 +55,9 @@ class Picksters_Model_Weekly_Picks {
 		$picksters_weekly_picks_params['weekly_picks_meta_nonce'] = wp_create_nonce( 'picksters_weekly_picks_meta_nonce' );
 		//ob_start();
 		$digital_seeds_template_loader->get_template_part( 'weekly-pick', 'meta');
-		require_once( picksters_plugin_dir . 'templates/weekly-pick-meta-template.php' );
-		//$display= ob_get_clean();
-		//echo $display;
+		//require_once( picksters_plugin_dir . 'templates/weekly-pick-meta-template.php' );
+		$display= ob_get_clean();
+		echo $display;
 	}
 
 	public function save_weekly_picks_meta_data() {

@@ -11,8 +11,8 @@
 
 namespace  ExecutiveSuiteIt\Picksters\Templates;
 
-global $wp_roles, $picksters, $topic_restrictions_params;
-extract ($topic_restrictions_params);
+global $wp_roles, $picksters, $picksters_restriction_params;
+extract ($picksters_restriction_params);
 
 $visibility = get_post_meta( $post->ID, '_picksters_pick_visibility', true );
 $redirection_url = get_post_meta( $post->ID, '_picksters_pick_redirection_url', true);
