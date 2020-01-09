@@ -29,7 +29,7 @@ use ExecutiveSuiteIt\Picksters\Classes\testing_class;
 
 
 // Validating existence of required plugins
-if (! defined ('digital_seeds_tmpl_path')) {
+if ( ! defined( 'digital_seeds_tmpl_path' ) ) {
 	echo '<div class="error"><p><strong>Picksters</strong> requires<strong>Digital Seeds Template Loader</strong> plugin to function properly.</p></div>';
 }
 
@@ -53,18 +53,22 @@ if ( ! class_exists( 'picksters' ) ) {
 
 
 				//Class object initialization
-				self::$instance->config_manager  = new Picksters_Config_Manager();
-				self::$instance->registration    = new Picksters_Registration();
-				self::$instance->login           = new Picksters_Login();
+				self::$instance->config_manager = new Picksters_Config_Manager();
+				self::$instance->registration   = new Picksters_Registration();
+				self::$instance->login          = new Picksters_Login();
 				//self::$instance->template_loader = new Picksters_Template_Loader();
-				self::$instance->model_manager   = new Picksters_Model_Manager();
-				self::$instance->weekly_picks    = new Picksters_Model_Weekly_Picks();
-				self::$instance->six_picks       = new Picksters_Model_Six_Picks();
-				self::$instance->jsonhandler     = new jsonhandler();
-				self::$instance->test            = new testing_class();
-				self::$instance->restrictions = new Classes\picksters_content_restrictions();
+				self::$instance->model_manager = new Picksters_Model_Manager();
+				self::$instance->weekly_picks  = new Picksters_Model_Weekly_Picks();
+				self::$instance->six_picks     = new Picksters_Model_Six_Picks();
+				self::$instance->jsonhandler   = new jsonhandler();
+				self::$instance->test          = new testing_class();
+				self::$instance->restrictions  = new Classes\picksters_content_restrictions();
+				self::$instance->dashboard     = new Picksters_Dashboard();
 
-				register_activation_hook( __FILE__, array( self::$instance->config_manager, 'activation_handler' ) );
+				register_activation_hook( __FILE__, array(
+					self::$instance->config_manager,
+					'activation_handler'
+				) );
 
 			}
 
@@ -73,9 +77,8 @@ if ( ! class_exists( 'picksters' ) ) {
 		}
 
 
-
 		public function setup_constants() {
-            global $digital_seeds_template_loader;
+			global $digital_seeds_template_loader;
 
 
 			if ( ! defined( 'picksters_version' ) ) {
@@ -88,7 +91,7 @@ if ( ! class_exists( 'picksters' ) ) {
 				define( 'picksters_plugin_url', plugin_dir_url( __FILE__ ) );
 			}
 
-			$digital_seeds_template_loader->set_plugin_path(picksters_plugin_dir);
+			$digital_seeds_template_loader->set_plugin_path( picksters_plugin_dir );
 
 		}
 
@@ -111,6 +114,7 @@ if ( ! class_exists( 'picksters' ) ) {
 			require_once picksters_plugin_dir . 'classes/helper/class_jsonhelper.php';
 			require_once picksters_plugin_dir . 'classes/testing_class.php';
 			require_once picksters_plugin_dir . 'classes/class_picksters_content_restrictions.php';
+			require_once picksters_plugin_dir . 'classes/class_picksters_dashboard.php';
 		}
 
 		public function load_textdomain() {
@@ -118,7 +122,6 @@ if ( ! class_exists( 'picksters' ) ) {
 
 
 	}
-
 
 
 	function picksters() {
