@@ -15,37 +15,78 @@ namespace ExecutiveSuiteIt\Picksters\Classes;
 class season_data {
 
 	// function to check if a game has started yet and will return true if started
-	public function game_time_compare( $date, $start_time ){
-		$game_time = $date . ' ' . $start_time;
-		$current_time = current_time('mysql');
+	public function game_time_compare( $date, $start_time ) {
+		$game_time    = $date . ' ' . $start_time;
+		$current_time = current_time( 'mysql' );
 
-		$game_started = FALSE;
-		if ($game_time <= $current_time ) {
-			$game_started = TRUE;
+		$game_started = false;
+		if ( $game_time <= $current_time ) {
+			$game_started = true;
 		};
+
 		return $game_started;
 	}
 
-	//set current season, week and year
+	/**
+	 * Calculates current season, week, and Season_type of NFL games based on today's date.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array
+	 */
 	public function current_place_in_season() {
 		//find the current season year(if in post season will be == to previous calender year)
 		$current_time = current_time( 'mysql' );
-		$current_date = substr($current_time, 0, strpos($current_time, " "));
-		$date = explode('-', $current_date);
-		if ($date[1] <= 2 ) {
+		$current_date = substr( $current_time, 0, strpos( $current_time, " " ) );
+		$date         = explode( '-', $current_date );
+
+		//account for POST season being considered part of previous calendar year
+		if ( $date[1] <= 2 ) {
 			$date[0] = $date[0] - 1;
 		}
-		$season[year] = $date;
-		ddd($season);
-	}
+
+		//set season type based on month (assumes August pre - and Jan-Feb post)
+		if ( $date[1] == 8 ) {
+			$season_type = 'PRE';
+		} elseif ( $date[1] <= 2 ) {
+			$season_type = 'POST';
+		} else {
+			$season_type = 'REG';
+		}
+
+		//set week
+		//get first game data
+		$json_data_first_week_of_season = $this->get_week_json_file( 1, $date[0], 'PRE' );
+		$first_game_date                = date( 'Y-m-d', strtotime( $json_data_first_week_of_season['gameScores'][0]['gameSchedule']['gameDate'] ) );
+
+		//format the date to work with date_diff function
+		$datetime1 = date_create( $first_game_date );
+		$datetime2 = date_create( $current_date );
 
 
+		//find the difference in days from the first game of the season - today and +2 to make sure schedule increments on Tuesdays
+		$interval = date_diff( $datetime1, $datetime2 );
+		$interval = $interval->format( '%a' );
+		$interval = $interval + 2;
 
-		$season_date = array(
-			//year
-			//season
-			//week
+		//divide by 7 to get weeks and -3 when not in Pre-Season (-4 would give previous week, but we want upcoming)
+		if ( $season_type == 'PRE' ) {
+			if ( $interval <= 7 ) {
+				$week = 2;
+			} else {
+				$week = intdiv( $interval, 7 );
+			}
+		} else {
+			$week = intdiv( $interval, 7 ) - 3;
+		}
+
+		$season = array(
+			'year'        => $date[0],
+			'season_type' => $season_type,
+			'week'        => $week
 		);
+
+		return $season;
 	}
 
 	//load data file for a single week
@@ -57,8 +98,7 @@ class season_data {
 			$json_data = $picksters->jsonhandler->decode( $json, true );
 
 			return $json_data;
-		}
-		else {
+		} else {
 			$this->save_json_data();
 		}
 	}
@@ -122,7 +162,7 @@ class season_data {
 			$year               = $json_data['gameScores'][ $i ]['gameSchedule']['season'];
 			$week               = $json_data['gameScores'][ $i ]['gameSchedule']['week'];
 			$season_type        = $json_data['gameScores'][ $i ]['gameSchedule']['gameType'];
-			$date               = date( 'Y-m-d', strtotime($json_data['gameScores'][ $i ]['gameSchedule']['gameDate']));
+			$date               = date( 'Y-m-d', strtotime( $json_data['gameScores'][ $i ]['gameSchedule']['gameDate'] ) );
 			$start_time_eastern = $json_data['gameScores'][ $i ]['gameSchedule']['gameTimeEastern'];
 			$isotime            = $json_data['gameScores'][ $i ]['gameSchedule']['isoTime'];
 			$home_team          = $json_data['gameScores'][ $i ]['gameSchedule']['homeDisplayName'];
@@ -154,10 +194,9 @@ class season_data {
 	//retrieves the json data from NFL live website
 	public function get_json_data_from_source( $year, $seasonType, $week ) {
 		$json_feed = @file_get_contents( 'http://www.nfl.com/feeds-rs/scores/' . $year . '/' . $seasonType . '/' . $week . '.json' );
-		if ($json_feed === false) {
+		if ( $json_feed === false ) {
 			return;
-		}
-		else {
+		} else {
 			return $json_feed;
 		}
 	}
@@ -183,9 +222,8 @@ class season_data {
 				} else {
 					$nfl_data = $this->get_json_data_from_source( $year, $seasonType, $week );
 				}
-				if ($nfl_data == null) {
-				}
-				else {
+				if ( $nfl_data == null ) {
+				} else {
 					file_put_contents( picksters_plugin_dir . 'assets/jsondata/' . $year . '/' . $seasonType . '_' . $week . '.json', $nfl_data );
 				}
 			}

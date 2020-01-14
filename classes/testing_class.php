@@ -55,66 +55,7 @@ class testing_class {
 
 //set current season, week and year
 
-	/**
-	 * Calculates current season, week, and Season_type of NFL games based on today's date.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return array
-	 */
-	public function current_place_in_season() {
-		//find the current season year(if in post season will be == to previous calender year)
-		$current_time = current_time( 'mysql' );
-		$current_date = substr( $current_time, 0, strpos( $current_time, " " ) );
-		$date         = explode( '-', $current_date );
 
-		//account for POST season being considered part of previous calendar year
-		if ( $date[1] <= 2 ) {
-			$date[0] = $date[0] - 1;
-		}
-
-		//set season type based on month (assumes August pre - and Jan-Feb post)
-		if ($date[1] == 8) {
-			$season_type = 'PRE';
-		} elseif ($date[1] <=2 ) {
-			$season_type = 'POST';
-		} else {
-			$season_type = 'REG';
-		}
-
-		//set week
-		//get first game data
-		$json_data_first_week_of_season = $this->get_week_json_file( 1, $date[0], 'PRE' );
-		$first_game_date = date( 'Y-m-d', strtotime($json_data_first_week_of_season['gameScores'][0]['gameSchedule']['gameDate']));
-
-		//format the date to work with date_diff function
-		$datetime1 = date_create($first_game_date);
-		$datetime2 = date_create($current_date);
-
-
-		//find the difference in days from the first game of the season - today and +2 to make sure schedule increments on Tuesdays
-		$interval = date_diff($datetime1, $datetime2);
-		$interval = $interval->format('%a');
-		$interval = $interval +2;
-
-		//divide by 7 to get weeks and -3 when not in Pre-Season (-4 would give previous week, but we want upcoming)
-		if ($season_type == 'PRE' ){
-			if ($interval <= 7 ) {
-				$week = 2;
-			} else {
-				$week = intdiv( $interval, 7 );
-			}
-		} else {
-			$week = intdiv( $interval, 7 ) -3;
-		}
-
-		$season = array(
-			'year' => $date[0],
-			'season_type' => $season_type,
-			'week' => $week
-		);
-		return $season;
-	}
 
 
 	public function create_nfl_season_array() {
