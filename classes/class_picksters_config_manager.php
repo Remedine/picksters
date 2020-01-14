@@ -46,7 +46,7 @@ class Picksters_Config_Manager {
 		$custom_member_capabilities = array(
 			'edit_picksters_six_picks',
 			'publish_picksters_six_picks',
-			'delete_pickster_six_picks',
+			'delete_picksters_six_picks',
 			'edit_published_picksters_six_picks',
 			'create_picksters_six_picks',
 			'assign_picksters_six_pick_tag',
@@ -87,12 +87,12 @@ class Picksters_Config_Manager {
 
 		$picksters_moderator_role    = get_role( 'picksters_moderator' );
 		$picksters_admin_role        = get_role( 'picksters_admin' );
-		$pickster_administrator_role = get_role( 'administrator' );
+		$picksters_administrator_role = get_role( 'administrator' );
 
 		foreach ( $custom_admin_capabilities as $capability ) {
 			$picksters_moderator_role->add_cap( $capability );
 			$picksters_admin_role->add_cap( $capability );
-			$pickster_administrator_role->add_cap( $capability );
+			$picksters_administrator_role->add_cap( $capability );
 		}
 	}
 

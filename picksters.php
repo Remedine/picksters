@@ -26,6 +26,9 @@ use ExecutiveSuiteIt\Picksters\Classes\Picksters_Registration;
 //use ExecutiveSuiteIt\Picksters\Classes\Picksters_Template_Loader;
 use ExecutiveSuiteIt\Picksters\Classes\Picksters_Model_Six_Picks;
 use ExecutiveSuiteIt\Picksters\Classes\testing_class;
+use ExecutiveSuiteIt\Picksters\Classes\Picksters_Dashboard;
+use ExecutiveSuiteIt\picksters\classes\picksters_content_restrictions;
+
 
 
 // Validating existence of required plugins
@@ -62,7 +65,7 @@ if ( ! class_exists( 'picksters' ) ) {
 				self::$instance->six_picks     = new Picksters_Model_Six_Picks();
 				self::$instance->jsonhandler   = new jsonhandler();
 				self::$instance->test          = new testing_class();
-				self::$instance->restrictions  = new Classes\picksters_content_restrictions();
+				self::$instance->restrictions  = new picksters_content_restrictions();
 				self::$instance->dashboard     = new Picksters_Dashboard();
 
 				register_activation_hook( __FILE__, array(

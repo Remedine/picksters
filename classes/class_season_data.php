@@ -2,7 +2,7 @@
 /**
  * Description.
  *
- * @package ${namespace}
+ * @package ExecutiveSuiteIt\Picksters\Classes;
  * @Since 1.0.0
  * @author Timothy Hill
  * @link https://executivesuiteit.com
@@ -12,7 +12,41 @@
 namespace ExecutiveSuiteIt\Picksters\Classes;
 
 
-class update_schedule_scores {
+class season_data {
+
+	// function to check if a game has started yet and will return true if started
+	public function game_time_compare( $date, $start_time ){
+		$game_time = $date . ' ' . $start_time;
+		$current_time = current_time('mysql');
+
+		$game_started = FALSE;
+		if ($game_time <= $current_time ) {
+			$game_started = TRUE;
+		};
+		return $game_started;
+	}
+
+	//set current season, week and year
+	public function current_place_in_season() {
+		//find the current season year(if in post season will be == to previous calender year)
+		$current_time = current_time( 'mysql' );
+		$current_date = substr($current_time, 0, strpos($current_time, " "));
+		$date = explode('-', $current_date);
+		if ($date[1] <= 2 ) {
+			$date[0] = $date[0] - 1;
+		}
+		$season[year] = $date;
+		ddd($season);
+	}
+
+
+
+		$season_date = array(
+			//year
+			//season
+			//week
+		);
+	}
 
 	//load data file for a single week
 	public function get_week_json_file( $week, $year, $seasonType ) {
@@ -159,7 +193,6 @@ class update_schedule_scores {
 	}
 
 
-
 	/**
 	 * Displays the template file with the data loaded for the week being picked.
 	 *
@@ -176,12 +209,13 @@ class update_schedule_scores {
 	 * @return void
 	 */
 	public function display_data_template( $page_name = 'test', $week = 1, $year = 2019, $seasonType = 'REG' ) {
-		global $picksters;
+		global $picksters, $digital_seeds_template_loader;
 
 		$this->save_season_to_db();
 		$json_data = $this->get_week_json_file( $week, $year, $seasonType );
 
-		include picksters_plugin_dir . 'templates/' . $page_name . '.php';
+		$digital_seeds_template_loader->get_template_part( 'test' );
+		//include picksters_plugin_dir . 'templates/' . $page_name . '.php';
 	}
 
 }

@@ -13,8 +13,6 @@ namespace ExecutiveSuiteIt\Picksters\Templates;
 
 global $picksters_weekly_picks_params;
 
-
-
 if ( is_array( $picksters_weekly_picks_params ) ) {
 	extract( $picksters_weekly_picks_params );
 }

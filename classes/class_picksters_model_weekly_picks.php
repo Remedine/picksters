@@ -28,7 +28,7 @@ class Picksters_Model_Weekly_Picks {
 		global $picksters;
 		$params                       = array();
 		$params['post_type']          = $this->post_type;
-		$params['singular_post_name'] = __( 'Weekly Pick', 'picksters' );
+		$params['singular_post_name'] = __( 'Weekly Picks', 'picksters' );
 		$params['plural_post_name']   = __( 'Weekly Picks', 'picksters' );
 		$params['description']        = __( 'Make your weekly picks.', 'picksters' );
 		$params['supported_fields']   = array( 'title', 'custom-fields' );
@@ -54,10 +54,12 @@ class Picksters_Model_Weekly_Picks {
 		$picksters_weekly_picks_params['$this->post_type'];
 		$picksters_weekly_picks_params['weekly_picks_meta_nonce'] = wp_create_nonce( 'picksters_weekly_picks_meta_nonce' );
 		//ob_start();
-		$digital_seeds_template_loader->get_template_part( 'weekly-pick', 'meta');
+		$digital_seeds_template_loader->get_template_part( 'weekly-pick', 'meta' );
+
 		//require_once( picksters_plugin_dir . 'templates/weekly-pick-meta-template.php' );
-		$display= ob_get_clean();
-		echo $display;
+
+		//$display= ob_get_clean();
+		//echo $display;
 	}
 
 	public function save_weekly_picks_meta_data() {
@@ -113,20 +115,20 @@ class Picksters_Model_Weekly_Picks {
 
 	public function weekly_picks_admin_notices() {
 		global $post;
-		$temp_error_message = get_transient( $this->post_type."_error_message_$post->ID");
-		delete_transient( $this->post_type."_error_message_$post->ID" );
-		if( !($temp_error_message)) {
+		$temp_error_message = get_transient( $this->post_type . "_error_message_$post->ID" );
+		delete_transient( $this->post_type . "_error_message_$post->ID" );
+		if ( ! ( $temp_error_message ) ) {
 			return;
 		}
-		$how_many_games = count($temp_error_message);
+		$how_many_games = count( $temp_error_message );
 		for ( $i = 0; $i <= $how_many_games; $i ++ ) {
-			$message .= '<div id="picksters_errors" class="error below-h2"><p>' . $temp_error_message[$i] . '</p></div>';
+			$message .= '<div id="picksters_errors" class="error below-h2"><p>' . $temp_error_message[ $i ] . '</p></div>';
 		}
 
-		if( !empty($message)) {
+		if ( ! empty( $message ) ) {
 			echo $message;
 		};
-		remove_action( 'admin_notices', array( $this, 'weekly_picks_admin_notices'));
+		remove_action( 'admin_notices', array( $this, 'weekly_picks_admin_notices' ) );
 	}
 
 
@@ -142,10 +144,11 @@ class Picksters_Model_Weekly_Picks {
 
 
 	public function display_weekly_picks_forms() {
-		global $picksters_weekly_picks_params;
+		global $picksters_weekly_picks_params, $digital_seeds_template_loader;
 		if ( is_user_logged_in() ) {
-			$week_games_array = $this->get_weekly_games( $week = 3, $seasonType = 'REG', $year = 2019 );
-			include picksters_plugin_dir . 'templates/weekly-pick.php';
+			$week_games_array = $this->get_weekly_games( $week = 12, $seasonType = 'REG', $year = 2019 );
+			$digital_seeds_template_loader->get_template_part( 'weekly-pick' );
+			//include picksters_plugin_dir . 'templates/weekly-pick-template.php';
 		} else {
 			wp_redirect( home_url() );
 		}
@@ -193,8 +196,6 @@ class Picksters_Model_Weekly_Picks {
 
 	public function get_weekly_games( $week, $seasonType, $year ) {
 		global $wpdb;
-
-
 		//$wpdb->show_errors();
 		$week_games_array[] = $wpdb->get_results(
 			$wpdb->prepare(

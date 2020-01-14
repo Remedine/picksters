@@ -103,12 +103,12 @@ class picksters_content_restrictions {
 	public function add_picksters_restrictions( $post ) {
 		global $picksters, $picksters_restriction_params, $digital_seeds_template_loader;
 		$picksters_restriction_params['post'] = $post;
-		ob_start();
+		//ob_start();
 
 		$digital_seeds_template_loader->get_template_part( 'restriction', 'meta' );
-		$display = ob_get_clean();
+		//$display = ob_get_clean();
 
-		echo $display;
+		//echo $display;
 	}
 
 	public function save_picksters_restrictions( $post_id ) {
