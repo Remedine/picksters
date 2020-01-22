@@ -45,18 +45,17 @@ class Picksters_Model_Weekly_Picks {
 
 	}
 
-
 	public function display_weekly_picks_meta_boxes() {
 		global $picksters, $post, $picksters_weekly_picks_params, $week_games_array, $digital_seeds_template_loader;
 
 
-		$week_games_array = $this->get_weekly_games( $week = 15, $seasonType = 'REG', $year = 2018 );
+		$week_games_array = $this->get_weekly_games( $year , $seasonType, $week );
 		$picksters_weekly_picks_params['$this->post_type'];
 		$picksters_weekly_picks_params['weekly_picks_meta_nonce'] = wp_create_nonce( 'picksters_weekly_picks_meta_nonce' );
 		//ob_start();
-		$digital_seeds_template_loader->get_template_part( 'weekly-pick', 'meta' );
+		//$digital_seeds_template_loader->get_template_part( 'weekly-pick', 'meta' );
 
-		//require_once( picksters_plugin_dir . 'templates/weekly-pick-meta-template.php' );
+		require_once( picksters_plugin_dir . 'templates/weekly-pick-meta-template.php' );
 
 		//$display= ob_get_clean();
 		//echo $display;
@@ -132,27 +131,58 @@ class Picksters_Model_Weekly_Picks {
 	}
 
 
-	public function get_current_week() {
-
-		//return $current_week;
-	}
-
-	public function get_current_season() {
-
-		//return $current_season;
-	}
-
-
+	/**
+	 * Displays the weekly picks html template.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
 	public function display_weekly_picks_forms() {
-		global $picksters_weekly_picks_params, $digital_seeds_template_loader;
+		global $picksters, $picksters_weekly_picks_params, $digital_seeds_template_loader;
 		if ( is_user_logged_in() ) {
-			$week_games_array = $this->get_weekly_games( $week = 12, $seasonType = 'REG', $year = 2019 );
-			$digital_seeds_template_loader->get_template_part( 'weekly-pick' );
-			//include picksters_plugin_dir . 'templates/weekly-pick-template.php';
+			$current_place_in_season = $picksters->season_data->current_place_in_season();
+
+			$week_games_array        = $this->get_weekly_games( $year = $current_place_in_season['year'], $seasonType = $current_place_in_season['season_type'], $week = $current_place_in_season['week'] );
+			//$digital_seeds_template_loader->get_template_part( 'weekly-pick' );
+			include picksters_plugin_dir . 'templates/weekly-pick-template.php';
 		} else {
 			wp_redirect( home_url() );
 		}
 		exit;
+	}
+
+	/**
+	 * Query to get the NFL games for the week from the database. and returns them as an array.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param $year
+	 * @param $seasonType
+	 * @param $week
+	 *
+	 * @return array
+	 */
+	public function get_weekly_games( $year, $seasonType, $week ) {
+		global $wpdb;
+		// week 21 is a null week after championship game and before the superbowl
+		if ($week == 21 ) {
+			$week = 22;
+		}
+
+		//$wpdb->show_errors();
+		$week_games_array[] = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT home_team, away_team
+		FROM wp_games
+		WHERE year = %d AND  season_type = %s  AND week = %d", $year, $seasonType, $week
+			), ARRAY_A );
+
+		//$wpdb->print_error();
+
+		return $week_games_array;
+
+
 	}
 
 	/**
@@ -194,21 +224,6 @@ class Picksters_Model_Weekly_Picks {
 		}
 	}
 
-	public function get_weekly_games( $week, $seasonType, $year ) {
-		global $wpdb;
-		//$wpdb->show_errors();
-		$week_games_array[] = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT home_team, away_team
-		FROM wp_games
-		WHERE week = %s AND  season_type = %s  AND year = %s", $week, $seasonType, $year
-			), ARRAY_A );
 
-		//$wpdb->print_error();
-
-		return $week_games_array;
-
-
-	}
 
 }

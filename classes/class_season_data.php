@@ -12,12 +12,22 @@
 namespace ExecutiveSuiteIt\Picksters\Classes;
 
 
-class season_data {
+class Season_Data {
 
-	// function to check if a game has started yet and will return true if started
+	/*
+	 * function to check if a game has started yet and will return true if started
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param $date (YYYY-MM-DD)
+	 * @param $start_time (HH-MM-SS)
+	 *
+	 * @return bool - TRUE if game has started
+	 */
 	public function game_time_compare( $date, $start_time ) {
 		$game_time    = $date . ' ' . $start_time;
 		$current_time = current_time( 'mysql' );
+		$current_time;
 
 		$game_started = false;
 		if ( $game_time <= $current_time ) {
@@ -35,6 +45,7 @@ class season_data {
 	 * @return array
 	 */
 	public function current_place_in_season() {
+		global $picksters;
 		//find the current season year(if in post season will be == to previous calender year)
 		$current_time = current_time( 'mysql' );
 		$current_date = substr( $current_time, 0, strpos( $current_time, " " ) );
@@ -56,9 +67,13 @@ class season_data {
 
 		//set week
 		//get first game data
-		$json_data_first_week_of_season = $this->get_week_json_file( 1, $date[0], 'PRE' );
-		$first_game_date                = date( 'Y-m-d', strtotime( $json_data_first_week_of_season['gameScores'][0]['gameSchedule']['gameDate'] ) );
-
+		$file = picksters_plugin_dir . 'assets/jsondata/' . $date[0] . '/' . 'PRE' . '_' . 1 . '.json';
+		if (file_exists($file)) {
+			$json_data_first_week_of_season = $this->get_week_json_file( 1, $date[0], 'PRE' );
+			$first_game_date                = date( 'Y-m-d', strtotime( $json_data_first_week_of_season['gameScores'][0]['gameSchedule']['gameDate'] ) );
+		} else {
+			$picksters->test->get_week_json_file( $date[0], 'PRE', 1 );
+		}
 		//format the date to work with date_diff function
 		$datetime1 = date_create( $first_game_date );
 		$datetime2 = date_create( $current_date );

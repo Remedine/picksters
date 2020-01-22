@@ -25,6 +25,7 @@ use ExecutiveSuiteIt\picksters\classes\Picksters_Model_Weekly_Picks;
 use ExecutiveSuiteIt\Picksters\Classes\Picksters_Registration;
 //use ExecutiveSuiteIt\Picksters\Classes\Picksters_Template_Loader;
 use ExecutiveSuiteIt\Picksters\Classes\Picksters_Model_Six_Picks;
+use ExecutiveSuiteIt\Picksters\Classes\season_data;
 use ExecutiveSuiteIt\Picksters\Classes\testing_class;
 use ExecutiveSuiteIt\Picksters\Classes\Picksters_Dashboard;
 use ExecutiveSuiteIt\picksters\classes\picksters_content_restrictions;
@@ -67,6 +68,7 @@ if ( ! class_exists( 'picksters' ) ) {
 				self::$instance->test          = new testing_class();
 				self::$instance->restrictions  = new picksters_content_restrictions();
 				self::$instance->dashboard     = new Picksters_Dashboard();
+				self::$instance->season_data   = new Season_Data();
 
 				register_activation_hook( __FILE__, array(
 					self::$instance->config_manager,
@@ -118,6 +120,7 @@ if ( ! class_exists( 'picksters' ) ) {
 			require_once picksters_plugin_dir . 'classes/testing_class.php';
 			require_once picksters_plugin_dir . 'classes/class_picksters_content_restrictions.php';
 			require_once picksters_plugin_dir . 'classes/class_picksters_dashboard.php';
+			require_once picksters_plugin_dir  . 'classes/class_season_data.php';
 		}
 
 		public function load_textdomain() {

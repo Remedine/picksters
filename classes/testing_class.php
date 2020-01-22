@@ -15,16 +15,20 @@ namespace ExecutiveSuiteIt\Picksters\Classes;
 class testing_class {
 
 	//load data file
-	public function get_week_json_file( $week, $year, $seasonType ) {
+	public function get_week_json_file( $year, $seasonType, $week ) {
 		global $picksters;
+		if ($week == 21) {
+			$week = 22;
+		}
 		$file = picksters_plugin_dir . 'assets/jsondata/' . $year . '/' . $seasonType . '_' . $week . '.json';
+
 		if ( file_exists( $file ) ) {
 			$json      = file_get_contents( $file );
 			$json_data = $picksters->jsonhandler->decode( $json, true );
 
 			return $json_data;
 		} else {
-			$this->save_json_season_data();
+			$this->save_json_data();
 		}
 	}
 
@@ -47,15 +51,11 @@ class testing_class {
 		global $picksters;
 
 		//$this->save_season_to_db();
-		$this->current_place_in_season();
-		$json_data = $this->get_week_json_file( $week, $year, $seasonType );
+		$current_spot_in_season = $picksters->season_data->current_place_in_season();
+		$json_data              = $this->get_week_json_file( $current_spot_in_season['year'], $current_spot_in_season['season_type'], $current_spot_in_season['week'] );
 
 		include picksters_plugin_dir . 'templates/' . $page_name . '.php';
 	}
-
-//set current season, week and year
-
-
 
 
 	public function create_nfl_season_array() {
@@ -93,7 +93,7 @@ class testing_class {
 		for ( $i = 0; $i <= 2; $i ++ ) {
 
 			$seasonType = $nfl_season[0][ $i ]['SeasonType'];
-			$year       = 2018;
+			$year       = 2019;
 
 
 			for ( $ii = 1; $ii <= $nfl_season[0][ $i ]['length']; $ii ++ ) {
@@ -126,7 +126,7 @@ class testing_class {
 			$game_id            = $json_data['gameScores'][ $i ]['gameSchedule']['gameId'];
 			$year               = $json_data['gameScores'][ $i ]['gameSchedule']['season'];
 			$week               = $json_data['gameScores'][ $i ]['gameSchedule']['week'];
-			$season_type        = $json_data['gameScores'][ $i ]['gameSchedule']['gameType'];
+			$season_type        = $json_data['gameScores'][ $i ]['gameSchedule']['seasonType'];
 			$date               = date( 'Y-m-d', strtotime( $json_data['gameScores'][ $i ]['gameSchedule']['gameDate'] ) );
 			$start_time_eastern = $json_data['gameScores'][ $i ]['gameSchedule']['gameTimeEastern'];
 			$isotime            = $json_data['gameScores'][ $i ]['gameSchedule']['isoTime'];
@@ -135,6 +135,17 @@ class testing_class {
 			$home_team_score    = $json_data['gameScores'][ $i ]['score']['homeTeamScore']['pointTotal'];
 			$visitor_team_score = $json_data['gameScores'][ $i ]['score']['visitorTeamScore']['pointTotal'];
 
+/*
+ * INSERT INTO and on DUPLICATE KEY raw sql function is dropping a game on POST Season weeks and also saving 0 instead of Null for games that haven't been played yet
+ * needs debugged.
+ *
+			$sql = "INSERT INTO {$wpdb->prefix}games (nfl_game_id, year, week, season_type, date, game_start_time, isotime, home_team, away_team, home_team_score, away_team_score)
+					VALUES ('{$game_id}', '$year', '$week', '$season_type', '$date', '$start_time_eastern', '$isotime', '$home_team', '$visitor_team', '$home_team_score', '$visitor_team_score') ON DUPLICATE KEY UPDATE home_team_score= '$home_team_score', away_team_score= '$visitor_team_score'";
+
+			global $wpdb;
+			d($sql);
+			$wpdb->query($sql);
+*/
 
 			global $wpdb;
 			$wpdb->insert(
@@ -152,7 +163,30 @@ class testing_class {
 					'home_team_score' => $home_team_score,
 					'away_team_score' => $visitor_team_score
 				)
+
 			);
+
+			global $wpdb;
+			$wpdb->update(
+				$wpdb->prefix . 'games',
+				array(
+					'nfl_game_id'     => $game_id,
+					'year'            => $year,
+					'week'            => $week,
+					'season_type'     => $season_type,
+					'date'            => $date,
+					'game_start_time' => $start_time_eastern,
+					'isotime'         => $isotime,
+					'home_team'       => $home_team,
+					'away_team'       => $visitor_team,
+					'home_team_score' => $home_team_score,
+					'away_team_score' => $visitor_team_score
+				),
+				array(
+					'nfl_game_id' => $game_id
+				)
+			);
+
 		}
 	}
 
@@ -171,9 +205,9 @@ class testing_class {
 
 				if ( $nfl_season[0][ $i ]['SeasonType'] == 'POST' ) {
 					$week     += 17;
-					$nfl_data = $this->get_week_json_file( $week, $year, $seasonType );
+					$nfl_data = $this->get_week_json_file( $year, $seasonType, $week );
 				} else {
-					$nfl_data = $this->get_week_json_file( $week, $year, $seasonType );
+					$nfl_data = $this->get_week_json_file( $year, $seasonType, $week);
 				}
 				$this->save_nfl_data_to_db( $nfl_data );
 			}
