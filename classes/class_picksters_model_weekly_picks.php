@@ -48,8 +48,11 @@ class Picksters_Model_Weekly_Picks {
 	public function display_weekly_picks_meta_boxes() {
 		global $picksters, $post, $picksters_weekly_picks_params, $week_games_array, $digital_seeds_template_loader;
 
+		$current_place_in_season = $picksters->season_data->current_place_in_season();
+		$week_games_array        = $this->get_weekly_games( $year = $current_place_in_season['year'], $seasonType = $current_place_in_season['season_type'], $week = $current_place_in_season['week'] );
 
-		$week_games_array = $this->get_weekly_games( $year , $seasonType, $week );
+
+		//$week_games_array = $this->get_weekly_games( $year , $seasonType, $week );
 		$picksters_weekly_picks_params['$this->post_type'];
 		$picksters_weekly_picks_params['weekly_picks_meta_nonce'] = wp_create_nonce( 'picksters_weekly_picks_meta_nonce' );
 		//ob_start();
@@ -169,7 +172,8 @@ class Picksters_Model_Weekly_Picks {
 		if ($week == 21 ) {
 			$week = 22;
 		}
-
+		$week = 17;
+		$seasonType = 'REG';
 		//$wpdb->show_errors();
 		$week_games_array[] = $wpdb->get_results(
 			$wpdb->prepare(
@@ -193,7 +197,7 @@ class Picksters_Model_Weekly_Picks {
 	 * @return void
 	 */
 	public function process_picks() {
-		global $picksters_weekly_picks_params;
+		global $picksters_weekly_picks_params, $picksters;
 
 		if ( $_POST['picksters_picks_submit'] ) {
 			$errors = array();
@@ -202,7 +206,8 @@ class Picksters_Model_Weekly_Picks {
 			}
 
 			//make $Game[1-x] build variables dynamically depending upon how many games that week.
-			$how_many_games = $_POST['how_many_games'];
+			$how_many_games = sanitize_text_field( trim( $_POST['how_many_games'] ) );
+			$picked_games_array = array();
 			for ( $i = 1; $i <= $how_many_games; $i ++ ) {
 				${'game' . $i}                                = $_POST[ 'game' . $i ];
 				$picksters_weekly_picks_params[ 'game' . $i ] = $_POST[ 'game' . $i ];
@@ -212,12 +217,29 @@ class Picksters_Model_Weekly_Picks {
 				if ( empty( ${'game' . $i} ) ) {
 					array_push( $errors, __( '*Oops, you forgot to pick game #' . $i ) );
 				}
+				//sanitize user submission and save to array
+				$picked_games_array[ 'game' . $i ] = sanitize_text_field( trim( ${'game' . $i} ) );
 			}
 
 			$picksters_weekly_picks_params['errors'] = $errors;
 
-			if ( empty( $errors ) ) {
-
+			if ( empty( $errors ) && isset($_POST['picksters_picks_submit']) ) {
+				$current_user = get_current_user_id();
+				$current_place_in_season = $picksters->season_data->current_place_in_season();
+				$post_title = $current_user . ' ' . $current_place_in_season['year'] . '_' . $current_place_in_season['season_type'] . '_' . $current_place_in_season['week'];
+				$my_post = array (
+					'post_id' => $current_user,
+					'post_type' => 'weekly_picks',
+					'post_title' => $post_title,
+					'post_content' => ' ', //$picked_games_array,
+					'post_status' => 'publish',
+					'comment_status' => 'closed',   // if you prefer
+					'ping_status' => 'closed',    // if you prefer
+				);
+				$post_id = wp_insert_post( $my_post );
+				d( $post_id );
+				$meta_id = add_post_meta( $post_id, 'Weekly_picks', $picked_games_array );
+				ddd($meta_id);
 			}
 
 
