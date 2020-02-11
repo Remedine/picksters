@@ -51,7 +51,6 @@ class Picksters_Model_Weekly_Picks {
 		$current_place_in_season = $picksters->season_data->current_place_in_season();
 		$week_games_array        = $this->get_weekly_games( $year = $current_place_in_season['year'], $seasonType = $current_place_in_season['season_type'], $week = $current_place_in_season['week'] );
 
-
 		//$week_games_array = $this->get_weekly_games( $year , $seasonType, $week );
 		$picksters_weekly_picks_params['$this->post_type'];
 		$picksters_weekly_picks_params['weekly_picks_meta_nonce'] = wp_create_nonce( 'picksters_weekly_picks_meta_nonce' );
@@ -146,6 +145,9 @@ class Picksters_Model_Weekly_Picks {
 		if ( is_user_logged_in() ) {
 			$current_place_in_season = $picksters->season_data->current_place_in_season();
 
+			$bob = $this->check_if_picked_already(2, 2019, 'POST', 21);
+			ddd($bob);
+
 			$week_games_array        = $this->get_weekly_games( $year = $current_place_in_season['year'], $seasonType = $current_place_in_season['season_type'], $week = $current_place_in_season['week'] );
 			//$digital_seeds_template_loader->get_template_part( 'weekly-pick' );
 			include picksters_plugin_dir . 'templates/weekly-pick-template.php';
@@ -172,8 +174,7 @@ class Picksters_Model_Weekly_Picks {
 		if ($week == 21 ) {
 			$week = 22;
 		}
-		$week = 17;
-		$seasonType = 'REG';
+
 		//$wpdb->show_errors();
 		$week_games_array[] = $wpdb->get_results(
 			$wpdb->prepare(
@@ -237,15 +238,30 @@ class Picksters_Model_Weekly_Picks {
 					'ping_status' => 'closed',    // if you prefer
 				);
 				$post_id = wp_insert_post( $my_post );
-				d( $post_id );
 				$meta_id = add_post_meta( $post_id, 'Weekly_picks', $picked_games_array );
-				ddd($meta_id);
 			}
-
-
 		}
 	}
 
+	public function check_if_picked_already( $user_id, $year, $season_type, $week ){
+		global $wpdb;
 
+		$post_title = $user_id . ' ' . $year . '_' . $season_type . '_' . $week;
+		//$wpdb->show_errors();
+		$is_picked = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT A.post_title, B.post_id, B.meta_id, B.meta_value
+		FROM wp_posts AS A INNER JOIN wp_postmeta AS B ON A.ID = B.post_id
+		WHERE post_title = '{$post_title}'"
+
+
+			), ARRAY_A );
+		//$wpdb->print_error();
+
+		d($is_picked);
+		$current_pick = unserialize($is_picked[0]['meta_value']);
+		ddd($current_pick);
+		return $is_picked;
+	}
 
 }
