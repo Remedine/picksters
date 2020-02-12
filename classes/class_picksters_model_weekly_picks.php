@@ -145,10 +145,11 @@ class Picksters_Model_Weekly_Picks {
 		if ( is_user_logged_in() ) {
 			$current_place_in_season = $picksters->season_data->current_place_in_season();
 
-			$bob = $this->check_if_picked_already(2, 2019, 'POST', 21);
-			ddd($bob);
-
-			$week_games_array        = $this->get_weekly_games( $year = $current_place_in_season['year'], $seasonType = $current_place_in_season['season_type'], $week = $current_place_in_season['week'] );
+			$bob = $this->check_if_picked_already(1, 2019, 'REG', 5);
+			d($bob);
+			$week_games_array = $this->get_weekly_games(2019, 'REG', 5);
+			d($week_games_array);
+			//$week_games_array        = $this->get_weekly_games( $year = $current_place_in_season['year'], $seasonType = $current_place_in_season['season_type'], $week = $current_place_in_season['week'] );
 			//$digital_seeds_template_loader->get_template_part( 'weekly-pick' );
 			include picksters_plugin_dir . 'templates/weekly-pick-template.php';
 		} else {
@@ -175,7 +176,7 @@ class Picksters_Model_Weekly_Picks {
 			$week = 22;
 		}
 
-		//$wpdb->show_errors();
+		$wpdb->show_errors();
 		$week_games_array[] = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT home_team, away_team
@@ -228,8 +229,10 @@ class Picksters_Model_Weekly_Picks {
 				$current_user = get_current_user_id();
 				$current_place_in_season = $picksters->season_data->current_place_in_season();
 				$post_title = $current_user . ' ' . $current_place_in_season['year'] . '_' . $current_place_in_season['season_type'] . '_' . $current_place_in_season['week'];
+				$get_array_if_picked = $this->check_if_picked_already( $current_user, 2019, 'REG', 5);
+					//$current_place_in_season['year'], $current_place_in_season['season_type'],$current_place_in_season['week'] );
 				$my_post = array (
-					'post_id' => $current_user,
+					'post_author' => $current_user,
 					'post_type' => 'weekly_picks',
 					'post_title' => $post_title,
 					'post_content' => ' ', //$picked_games_array,
@@ -237,8 +240,16 @@ class Picksters_Model_Weekly_Picks {
 					'comment_status' => 'closed',   // if you prefer
 					'ping_status' => 'closed',    // if you prefer
 				);
-				$post_id = wp_insert_post( $my_post );
-				$meta_id = add_post_meta( $post_id, 'Weekly_picks', $picked_games_array );
+
+				//if not-picked insert new post - if picked update meta with new picks
+				if( empty($get_array_if_picked) ) {
+					$post_id = wp_insert_post( $my_post );
+					$meta_id = add_post_meta( $post_id, 'Weekly_picks', $picked_games_array );
+				} else {
+					$meta_id = update_post_meta($get_array_if_picked[0]['post_id'], 'Weekly_picks', $picked_games_array);
+					ddd($meta_id);
+				}
+
 			}
 		}
 	}
@@ -260,7 +271,10 @@ class Picksters_Model_Weekly_Picks {
 
 		d($is_picked);
 		$current_pick = unserialize($is_picked[0]['meta_value']);
-		ddd($current_pick);
+		if( empty($current_pick) ) {
+			echo( 'Picks have not been made - need to add code here to make picks.');
+		}
+		d($current_pick);
 		return $is_picked;
 	}
 
