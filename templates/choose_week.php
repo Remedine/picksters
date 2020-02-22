@@ -11,15 +11,13 @@
 
 namespace ExecutiveSuiteIt\Picksters\Templates;
 
-get_header();
-
 ?>
 
 <div class="week_chooser">
     <form action="<?php echo get_site_url() . '/user/picks'; ?>" method="post" id="week_chooser_form">
 
         <label for="week">Choose a week:</label>
-        <select id="week" name="week" form="week">
+        <select id="week" name="week" form="week_chooser_form">
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -39,9 +37,7 @@ get_header();
             <option value="17">17</option>
         </select>
 
-        <input type="submit">
+        <input type='submit' name='picksters_week_submit' value='<?php echo __( 'Submit Picks', 'picksters' ); ?>'/>
 
     </form>
 </div>
-
-	<?php get_footer(); ?>
