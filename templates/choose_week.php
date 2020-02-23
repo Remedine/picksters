@@ -37,7 +37,7 @@ namespace ExecutiveSuiteIt\Picksters\Templates;
             <option value="17">17</option>
         </select>
 
-        <input type='submit' name='picksters_week_submit' value='<?php echo __( 'Submit Picks', 'picksters' ); ?>'/>
+        <input type='submit' name='picksters_week_submit' value='<?php echo __( 'Submit Week', 'picksters' ); ?>'/>
 
     </form>
 </div>
