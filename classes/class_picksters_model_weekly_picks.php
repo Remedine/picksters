@@ -146,16 +146,39 @@ class Picksters_Model_Weekly_Picks {
 		if ( is_user_logged_in() ) {
 			$current_place_in_season = $picksters->season_data->current_place_in_season();
 
-			$bob = $this->check_if_picked_already(1, 2019, 'REG', 5);
-			d($bob);
-			$week_games_array = $this->get_weekly_games(2019, 'REG', 5);
-			d($week_games_array);
+			$bob = $this->check_if_picked_already( 1, 2019, 'REG', 5 );
+			d( $bob );
+			$week_games_array = $this->get_weekly_games( 2019, 'REG', 5 );
+			d( $week_games_array );
 			//$week_games_array        = $this->get_weekly_games( $year = $current_place_in_season['year'], $seasonType = $current_place_in_season['season_type'], $week = $current_place_in_season['week'] );
 			//$digital_seeds_template_loader->get_template_part( 'weekly-pick' );
-			include picksters_plugin_dir . 'templates/choose_week.php';
-			d($_POST);
+
+
+			if ( $_POST['time_based'] == 'true' ) {
+				$time_based = TRUE;
+				$user_choose = TRUE;
+			}
+			if ($_POST['user_input'] == 'true' ) {
+				$time_based = FALSE;
+				$user_choose = FALSE;
+			}
+			d($time_based, $user_choose);
+
+			if ($time_based == FALSE ) {
+				include picksters_plugin_dir . 'templates/time_based_chooser.php';
+			}
+			if ($time_based == TRUE); {
+				include picksters_plugin_dir . 'templates/user_input_chooser.php';
+			}
+
 			$week_from_POST = $_POST["week"];
-			d($week_from_POST);
+			d( $_POST );
+
+			d( $week_from_POST );
+			if ( $user_choose == TRUE) {
+				include picksters_plugin_dir . 'templates/choose_week.php';
+			}
+
 			//include picksters_plugin_dir . 'templates/weekly-pick-template.php';
 
 		} else {
@@ -178,7 +201,7 @@ class Picksters_Model_Weekly_Picks {
 	public function get_weekly_games( $year, $seasonType, $week ) {
 		global $wpdb;
 		// week 21 is a null week after championship game and before the superbowl
-		if ($week == 21 ) {
+		if ( $week == 21 ) {
 			$week = 22;
 		}
 
@@ -214,7 +237,7 @@ class Picksters_Model_Weekly_Picks {
 			}
 
 			//make $Game[1-x] build variables dynamically depending upon how many games that week.
-			$how_many_games = sanitize_text_field( trim( $_POST['how_many_games'] ) );
+			$how_many_games     = sanitize_text_field( trim( $_POST['how_many_games'] ) );
 			$picked_games_array = array();
 			for ( $i = 1; $i <= $how_many_games; $i ++ ) {
 				${'game' . $i}                                = $_POST[ 'game' . $i ];
@@ -231,36 +254,36 @@ class Picksters_Model_Weekly_Picks {
 
 			$picksters_weekly_picks_params['errors'] = $errors;
 
-			if ( empty( $errors ) && isset($_POST['picksters_picks_submit']) ) {
-				$current_user = get_current_user_id();
+			if ( empty( $errors ) && isset( $_POST['picksters_picks_submit'] ) ) {
+				$current_user            = get_current_user_id();
 				$current_place_in_season = $picksters->season_data->current_place_in_season();
-				$post_title = $current_user . ' ' . $current_place_in_season['year'] . '_' . $current_place_in_season['season_type'] . '_' . $current_place_in_season['week'];
-				$get_array_if_picked = $this->check_if_picked_already( $current_user, 2019, 'REG', 5);
-					//$current_place_in_season['year'], $current_place_in_season['season_type'],$current_place_in_season['week'] );
-				$my_post = array (
-					'post_author' => $current_user,
-					'post_type' => 'weekly_picks',
-					'post_title' => $post_title,
-					'post_content' => ' ', //$picked_games_array,
-					'post_status' => 'publish',
+				$post_title              = $current_user . ' ' . $current_place_in_season['year'] . '_' . $current_place_in_season['season_type'] . '_' . $current_place_in_season['week'];
+				$get_array_if_picked     = $this->check_if_picked_already( $current_user, 2019, 'REG', 5 );
+				//$current_place_in_season['year'], $current_place_in_season['season_type'],$current_place_in_season['week'] );
+				$my_post = array(
+					'post_author'    => $current_user,
+					'post_type'      => 'weekly_picks',
+					'post_title'     => $post_title,
+					'post_content'   => ' ', //$picked_games_array,
+					'post_status'    => 'publish',
 					'comment_status' => 'closed',   // if you prefer
-					'ping_status' => 'closed',    // if you prefer
+					'ping_status'    => 'closed',    // if you prefer
 				);
 
 				//if not-picked insert new post - if picked update meta with new picks
-				if( empty($get_array_if_picked) ) {
+				if ( empty( $get_array_if_picked ) ) {
 					$post_id = wp_insert_post( $my_post );
 					$meta_id = add_post_meta( $post_id, 'Weekly_picks', $picked_games_array );
 				} else {
-					$meta_id = update_post_meta($get_array_if_picked[0]['post_id'], 'Weekly_picks', $picked_games_array);
-					ddd($meta_id);
+					$meta_id = update_post_meta( $get_array_if_picked[0]['post_id'], 'Weekly_picks', $picked_games_array );
+					ddd( $meta_id );
 				}
 
 			}
 		}
 	}
 
-	public function check_if_picked_already( $user_id, $year, $season_type, $week ){
+	public function check_if_picked_already( $user_id, $year, $season_type, $week ) {
 		global $wpdb;
 
 		$post_title = $user_id . ' ' . $year . '_' . $season_type . '_' . $week;
@@ -275,12 +298,13 @@ class Picksters_Model_Weekly_Picks {
 			), ARRAY_A );
 		//$wpdb->print_error();
 
-		d($is_picked);
-		$current_pick = unserialize($is_picked[0]['meta_value']);
-		if( empty($current_pick) ) {
-			echo( 'Picks have not been made - need to add code here to make picks.');
+		d( $is_picked );
+		$current_pick = unserialize( $is_picked[0]['meta_value'] );
+		if ( empty( $current_pick ) ) {
+			echo( 'Picks have not been made - need to add code here to make picks.' );
 		}
-		d($current_pick);
+		d( $current_pick );
+
 		return $is_picked;
 	}
 
