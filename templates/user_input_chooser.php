@@ -18,4 +18,5 @@ namespace ExecutiveSuiteIt\Picksters\Templates;
 		<input name="user_input" type="hidden" value="true">
 		<button>Click here to get this week's game choices.</button>
 	</form>
+    <p class="report-a-bug-response"></p>
 </div>

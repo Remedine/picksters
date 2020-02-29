@@ -16,6 +16,7 @@
 
 namespace ExecutiveSuiteIt\Picksters;
 
+use ExecutiveSuiteIt\Picksters\Classes\ajax_form_handler;
 use ExecutiveSuiteIt\Picksters\Classes\class_picksters_login;
 use ExecutiveSuiteIt\Picksters\Classes\Helper\jsonhandler;
 use ExecutiveSuiteIt\Picksters\Classes\Picksters_Config_Manager;
@@ -29,7 +30,6 @@ use ExecutiveSuiteIt\Picksters\Classes\season_data;
 use ExecutiveSuiteIt\Picksters\Classes\testing_class;
 use ExecutiveSuiteIt\Picksters\Classes\Picksters_Dashboard;
 use ExecutiveSuiteIt\picksters\classes\picksters_content_restrictions;
-
 
 
 // Validating existence of required plugins
@@ -69,6 +69,7 @@ if ( ! class_exists( 'picksters' ) ) {
 				self::$instance->restrictions  = new picksters_content_restrictions();
 				self::$instance->dashboard     = new Picksters_Dashboard();
 				self::$instance->season_data   = new Season_Data();
+				self::$instance->ajax_form     = new ajax_form_handler();
 
 				register_activation_hook( __FILE__, array(
 					self::$instance->config_manager,
@@ -120,7 +121,8 @@ if ( ! class_exists( 'picksters' ) ) {
 			require_once picksters_plugin_dir . 'classes/testing_class.php';
 			require_once picksters_plugin_dir . 'classes/class_picksters_content_restrictions.php';
 			require_once picksters_plugin_dir . 'classes/class_picksters_dashboard.php';
-			require_once picksters_plugin_dir  . 'classes/class_season_data.php';
+			require_once picksters_plugin_dir . 'classes/class_season_data.php';
+			require_once picksters_plugin_dir . 'classes/ajax_form_handler.php';
 		}
 
 		public function load_textdomain() {

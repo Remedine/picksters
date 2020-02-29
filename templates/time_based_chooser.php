@@ -18,4 +18,5 @@ namespace ExecutiveSuiteIt\Picksters\Templates;
         <input name="time_based" type="hidden" value="true">
         <button>Click here to choose your week.</button>
     </form>
+    <p class="report-a-bug-response"></p>
 </div>
