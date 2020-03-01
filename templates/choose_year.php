@@ -44,4 +44,5 @@ namespace ExecutiveSuiteIt\Picksters\Templates;
 		<input type='submit' name='picksters_year_submit' value='<?php echo __( 'Submit Year', 'picksters' ); ?>'/>
 
 	</form>
+    <p class="report-a-bug-response"></p>
 </div>

@@ -26,4 +26,5 @@ namespace ExecutiveSuiteIt\Picksters\Templates;
 		<input type='submit' name='picksters_season_type_submit' value='<?php echo __( 'Submit Season Type', 'picksters' ); ?>'/>
 
 	</form>
+    <p class="report-a-bug-response"></p>
 </div>
