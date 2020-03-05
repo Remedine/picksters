@@ -14,7 +14,7 @@ namespace ExecutiveSuiteIt\Picksters\Templates;
 ?>
 
 <div class="year_chooser">
-	<form action="<?php echo get_site_url() . '/user/picks'; ?>" method="post" id="year_chooser_form">
+	<form class="ajax_choose_week" action="<?php echo get_site_url() . '/user/picks'; ?>" method="post" id="year_chooser_form">
 
 		<label for="year">Choose a year:</label>
 		<select id="year" name="year" form="year_chooser_form">

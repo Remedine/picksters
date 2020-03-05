@@ -14,7 +14,7 @@ namespace ExecutiveSuiteIt\Picksters\Templates;
 ?>
 
 <div class="week_chooser">
-    <form action="<?php echo get_site_url() . '/user/picks'; ?>" method="post" id="week_chooser_form">
+    <form class="ajax_choose_week" action="<?php echo get_site_url() . '/user/picks'; ?>" method="post" id="week_chooser_form">
 
         <label for="week">Choose a week:</label>
         <select id="week" name="week" form="week_chooser_form">

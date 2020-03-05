@@ -13,7 +13,7 @@ namespace ExecutiveSuiteIt\Picksters\Classes;
 class ajax_form_handler {
 
 	public function __construct() {
-		add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'ajax_scripts' ) );
 	}
 
 	public function week_form() {
@@ -36,16 +36,22 @@ class ajax_form_handler {
 		include picksters_plugin_dir . 'templates/user_input_chooser.php';
 	}
 
-	function scripts() {
+	public function ajax_scripts() {
 
-		wp_enqueue_style( 'report-a-bug', picksters_plugin_dir . 'assets/css/report_a_bug.css');
-		wp_enqueue_script( 'report-a-bug', picksters_plugin_dir . 'assets/js/scripts.js', array( 'jquery' ), null, true );
 
-		// set variables for script
-		wp_localize_script( 'report-a-bug', 'settings', array( 'send_label' => __( 'Send report', 'reportabug' ) ) );
+		wp_enqueue_style( 'week_pick_form', picksters_plugin_url . 'assets/css/week_pick_form.css' );
+		wp_enqueue_script( 'ajax_script', picksters_plugin_url . 'assets/js/ajax_script.js', array( 'jquery' ), null, true );
+
+		$jp = array(
+			'nonce'   => wp_create_nonce( 'nonce' ),
+			'ajaxURL' => admin_url( 'admin-ajax.php' ),
+			'send_label' => __( 'Send report', 'reportabug' )
+		);
+
+		wp_localize_script( 'ajax_script', 'settings', $jp );
+
 
 	}
-
 
 
 }
