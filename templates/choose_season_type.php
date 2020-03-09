@@ -11,6 +11,7 @@
 
 namespace ExecutiveSuiteIt\Picksters\Templates;
 
+get_header();
 ?>
 
 <div class="season_type_chooser">
@@ -23,7 +24,7 @@ namespace ExecutiveSuiteIt\Picksters\Templates;
 			<option value="POST">Post Season</option>
 		</select>
 
-		<input type='submit' name='picksters_season_type_submit' value='<?php echo __( 'Submit Season Type', 'picksters' ); ?>'/>
+		<input type='submit' id="season_type_chooser_button" name='picksters_season_type_submit' value='<?php echo __( 'Submit Season Type', 'picksters' ); ?>'/>
 
 	</form>
     <p class="report-a-bug-response"></p>

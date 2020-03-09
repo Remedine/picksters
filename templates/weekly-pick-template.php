@@ -18,7 +18,7 @@ if ( is_array( $picksters_weekly_picks_params ) ) {
 }
 
 
-//get_header(); ?>
+get_header(); ?>
 
     <div class="picksters-weekly-picks">
 		<?php echo __( '<h1 id="picks_header">Make Your Picks | Choose Wisely!</h1>', 'picksters' ); ?>

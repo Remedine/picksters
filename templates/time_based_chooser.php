@@ -10,7 +10,7 @@
  */
 
 namespace ExecutiveSuiteIt\Picksters\Templates;
-
+get_header();
 ?>
 
 <div>
