@@ -12,7 +12,7 @@ jQuery(document).ready(function ($) {
             jQuery.ajax({
                 url : settings.ajax_url, // Here goes our WordPress AJAX endpoint.
                 type : 'post',
-                data : season_type,
+                data : user_input,
                 success : function( response ) {
                     // You can craft something here to handle the message return
                     //alert( response );

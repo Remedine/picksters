@@ -15,7 +15,7 @@ get_header();
 ?>
 
 <div class="season_type_chooser">
-	<form class="ajax_choose_week" action="<?php echo get_site_url() . '/user/picks'; ?>" method="post" id="season_type_chooser_form">
+	<form class="ajax_choose_week" action="season_form" method="post" id="season_type_chooser_form">
 
 		<label for="season_type">Choose a season_type:</label>
 		<select id="season_type" name="season_type" form="season_type_chooser_form">
