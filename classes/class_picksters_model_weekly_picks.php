@@ -152,6 +152,7 @@ class Picksters_Model_Weekly_Picks {
 			//$week_games_array        = $this->get_weekly_games( $year = $current_place_in_season['year'], $seasonType = $current_place_in_season['season_type'], $week = $current_place_in_season['week'] );
 			//$digital_seeds_template_loader->get_template_part( 'weekly-pick' );
 			include picksters_plugin_dir . 'templates/choose_season_type.php';
+
 			d($bob, $_POST);
 			$week_from_POST = $_POST["week"];
 
@@ -277,12 +278,12 @@ class Picksters_Model_Weekly_Picks {
 			), ARRAY_A );
 		//$wpdb->print_error();
 
-		d($is_picked);
+		//d($is_picked);
 		$current_pick = unserialize($is_picked[0]['meta_value']);
 		if( empty($current_pick) ) {
 			echo( 'Picks have not been made - need to add code here to make picks.');
 		}
-		d($current_pick);
+		//d($current_pick);
 		return $is_picked;
 	}
 

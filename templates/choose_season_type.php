@@ -15,7 +15,7 @@ get_header();
 ?>
 
 <div class="season_type_chooser">
-	<form class="ajax_choose_week" action="season_form" method="post" id="season_type_chooser_form">
+	<form class="ajax_choose_week" method="post" id="season_type_chooser_form">
 
 		<label for="season_type">Choose a season_type:</label>
 		<select id="season_type" name="season_type" form="season_type_chooser_form">
@@ -24,6 +24,7 @@ get_header();
 			<option value="POST">Post Season</option>
 		</select>
 
+        <input type="hidden" name="action" value="season_form"/>
 		<input type='submit' id="season_type_chooser_button" name='picksters_season_type_submit' value='<?php echo __( 'Submit Season Type', 'picksters' ); ?>'/>
 
 	</form>
