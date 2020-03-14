@@ -67,17 +67,17 @@ class ajax_form_handler {
 
 		// This is a secure process to validate if this request comes from a valid source.
 		if (check_ajax_referer( 'season-form-nonce' ) == TRUE) {
-			echo 'hi mom';
+
 		};
 		
 
 		//do something
 		$response['season_type'] = $_POST['season_input'];
 		$response['success'] = TRUE;
-		d($response);
 
 
-		wp_send_json_success( json_encode($response));
+
+		wp_send_json_success(json_encode($response));
 
 		die();
 	}

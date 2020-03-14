@@ -6,15 +6,17 @@ jQuery(document).ready(function ($) {
 
             // Here is the ajax petition.
             $.ajax({
-                url : settings.ajax_url, // Here goes our WordPress AJAX endpoint.
+                url : settings.ajaxURL, // Here goes our WordPress AJAX endpoint.
                 type : 'post',
                 data : {
                     season_input,
                     _ajax_nonce: settings.nonce,
-                   "action": "season_form"
+                   action: 'season_form'
                 },
                 success: function (response) {
-                   console.log(response.season_type);
+                    console.log(response);
+                    var respond = response;
+                    console.log(respond.data['season_type']);
                 },
                 fail : function( err ) {
                     // You can craft something here to handle an error if something goes wrong when doing the AJAX request.
