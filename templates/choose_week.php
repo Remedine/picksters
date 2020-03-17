@@ -10,10 +10,27 @@
  */
 
 namespace ExecutiveSuiteIt\Picksters\Templates;
-get_header();
+//get_header();
 ?>
 
-<div class="week_chooser">
+<div class="week_chooser" id="pre_week" style="display:none">
+    <form class="ajax_choose_week" action="<?php echo get_site_url() . '/user/picks'; ?>" method="post" id="week_chooser_form">
+
+        <label for="week">Choose a week:</label>
+        <select id="week" name="week" form="week_chooser_form">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+        </select>
+
+        <input type='submit' name='picksters_week_submit' value='<?php echo __( 'Submit Week', 'picksters' ); ?>'/>
+
+    </form>
+    <p class="report-a-bug-response"></p>
+</div>
+
+<div class="week_chooser" id="reg_week" style="display:none">
     <form class="ajax_choose_week" action="<?php echo get_site_url() . '/user/picks'; ?>" method="post" id="week_chooser_form">
 
         <label for="week">Choose a week:</label>
@@ -35,6 +52,23 @@ get_header();
             <option value="15">15</option>
             <option value="16">16</option>
             <option value="17">17</option>
+        </select>
+
+        <input type='submit' name='picksters_week_submit' value='<?php echo __( 'Submit Week', 'picksters' ); ?>'/>
+
+    </form>
+    <p class="report-a-bug-response"></p>
+</div>
+
+<div class="week_chooser" id="post_week" style="display:none">
+    <form class="ajax_choose_week" action="<?php echo get_site_url() . '/user/picks'; ?>" method="post" id="week_chooser_form">
+
+        <label for="week">Choose a week:</label>
+        <select id="week" name="week" form="week_chooser_form">
+            <option value="18">Wildcard Game</option>
+            <option value="19">Divisional Game</option>
+            <option value="20">Championship Game</option>
+            <option value="22">Superbowl Game</option>
         </select>
 
         <input type='submit' name='picksters_week_submit' value='<?php echo __( 'Submit Week', 'picksters' ); ?>'/>

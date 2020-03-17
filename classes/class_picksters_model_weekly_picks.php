@@ -151,15 +151,20 @@ class Picksters_Model_Weekly_Picks {
 
 			//$week_games_array        = $this->get_weekly_games( $year = $current_place_in_season['year'], $seasonType = $current_place_in_season['season_type'], $week = $current_place_in_season['week'] );
 			//$digital_seeds_template_loader->get_template_part( 'weekly-pick' );
-			include picksters_plugin_dir . 'templates/choose_season_type.php';
+			//include picksters_plugin_dir . 'templates/choose_season_type.php';
 
-			d($bob, $_POST);
+			get_header();
+			$picksters->ajax_form->season_form();
+			$picksters->ajax_form->week_form();
+			get_footer();
+
+			//d($bob, $_POST);
 			$week_from_POST = $_POST["week"];
 
-			d($week_from_POST);
-			$week_games_array = $this->get_weekly_games(2019, 'REG', $week_from_POST);
-			d($week_games_array);
-			include picksters_plugin_dir . 'templates/weekly-pick-template.php';
+			//d($week_from_POST);
+			//$week_games_array = $this->get_weekly_games(2019, 'REG', $week_from_POST);
+			//d($week_games_array);
+			//include picksters_plugin_dir . 'templates/weekly-pick-template.php';
 
 		} else {
 			wp_redirect( home_url() );

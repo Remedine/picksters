@@ -11,7 +11,7 @@
 
 namespace ExecutiveSuiteIt\Picksters\Templates;
 
-get_header();
+//get_header();
 ?>
 
 <div class="season_type_chooser">
@@ -30,3 +30,6 @@ get_header();
 	</form>
     <p class="report-a-bug-response"></p>
 </div>
+<div id="season_response_container"></div>
+
+<?php //get_footer();?>

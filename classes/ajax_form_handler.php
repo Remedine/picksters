@@ -14,8 +14,8 @@ class ajax_form_handler {
 
 	public function __construct() {
 		add_action( 'wp_enqueue_scripts', array( $this, 'ajax_scripts' ) );
-		add_action( 'wp_ajax_season_form', array( $this, 'send_season_form' )  ); // This is for authenticated users
-		add_action( 'wp_ajax_nopriv_season_form', array( 'send_season_form' )  );
+		add_action( 'wp_ajax_season_form', array( $this, 'send_season_form' ) ); // This is for authenticated users
+		add_action( 'wp_ajax_nopriv_season_form', array( 'send_season_form' ) );
 	}
 
 	public function week_form() {
@@ -66,18 +66,12 @@ class ajax_form_handler {
 	public function send_season_form() {
 
 		// This is a secure process to validate if this request comes from a valid source.
-		if (check_ajax_referer( 'season-form-nonce' ) == TRUE) {
+		if ( check_ajax_referer( 'season-form-nonce' ) == true ) {
+			$response = $_POST['season_input'];
 
+			wp_send_json_success( json_encode( $response ) );
 		};
-		
 
-		//do something
-		$response['season_type'] = $_POST['season_input'];
-		$response['success'] = TRUE;
-
-
-
-		wp_send_json_success(json_encode($response));
 
 		die();
 	}
