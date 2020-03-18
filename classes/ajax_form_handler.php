@@ -69,7 +69,7 @@ class ajax_form_handler {
 		if ( check_ajax_referer( 'season-form-nonce' ) == true ) {
 			set_transient('season_form_pick', $_POST['season'])
 
-			wp_send_json_success( json_encode( $response ) );
+			wp_send_json_success(  );
 		};
 
 
