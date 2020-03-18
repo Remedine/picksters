@@ -71,7 +71,7 @@ class ajax_form_handler {
 			set_transient( 'season_input_transient', $_POST['season_input'], 72000 );
 			$response = $_POST['season_input'];
 
-			wp_send_json_success( json_encode( $response ) );
+			wp_send_json_success(  );
 		};
 
 
