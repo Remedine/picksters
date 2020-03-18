@@ -19,19 +19,44 @@ jQuery(document).ready(function ($) {
             else {
                 console.log('something is up');
             }
-        }
+            $.ajax({
+                    url : settings.ajaxURL, // Here goes our WordPress AJAX endpoint.
+                    type : 'post',
+                    data : {
+                        season_input,
+                    _ajax_nonce: settings.nonce,
+                    action: 'season_form'
+                },
+                success: function(response) {
+                console.log(response);
+
+            },
+            fail : function( err ) {
+                // You can craft something here to handle an error if something goes wrong when doing the AJAX request.
+                alert( "There was an error: " + err );
+            }
+        });
+
+            // This return prevents the submit event to refresh the page.
+            return false;
+        })
+
+
+        $('.week_chooser').on('submit', function () {
+            var week_input = $('.week').val();
+            console.log(week_input);
             // Here is the ajax petition.
             $.ajax({
                 url : settings.ajaxURL, // Here goes our WordPress AJAX endpoint.
                 type : 'post',
                 data : {
-                    season_input,
+                    week_input,
                     _ajax_nonce: settings.nonce,
                    action: 'season_form'
                 },
                 success: function (response) {
                     console.log(response);
-                   // $('div.week_chooser').show();
+
                 },
                 fail : function( err ) {
                     // You can craft something here to handle an error if something goes wrong when doing the AJAX request.

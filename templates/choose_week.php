@@ -17,7 +17,7 @@ namespace ExecutiveSuiteIt\Picksters\Templates;
     <form class="ajax_choose_week" action="<?php echo get_site_url() . '/user/picks'; ?>" method="post" id="week_chooser_form">
 
         <label for="week">Choose a week:</label>
-        <select id="week" name="week" form="week_chooser_form">
+        <select class="week" name="week" form="week_chooser_form">
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -34,7 +34,7 @@ namespace ExecutiveSuiteIt\Picksters\Templates;
     <form class="ajax_choose_week" action="<?php echo get_site_url() . '/user/picks'; ?>" method="post" id="week_chooser_form">
 
         <label for="week">Choose a week:</label>
-        <select id="week" name="week" form="week_chooser_form">
+        <select class="week" name="week" form="week_chooser_form">
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -64,7 +64,7 @@ namespace ExecutiveSuiteIt\Picksters\Templates;
     <form class="ajax_choose_week" action="<?php echo get_site_url() . '/user/picks'; ?>" method="post" id="week_chooser_form">
 
         <label for="week">Choose a week:</label>
-        <select id="week" name="week" form="week_chooser_form">
+        <select class="week" name="week" form="week_chooser_form">
             <option value="18">Wildcard Game</option>
             <option value="19">Divisional Game</option>
             <option value="20">Championship Game</option>

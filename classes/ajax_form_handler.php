@@ -67,7 +67,7 @@ class ajax_form_handler {
 
 		// This is a secure process to validate if this request comes from a valid source.
 		if ( check_ajax_referer( 'season-form-nonce' ) == true ) {
-			$response = $_POST['season_input'];
+			set_transient('season_form_pick', $_POST['season'])
 
 			wp_send_json_success( json_encode( $response ) );
 		};
