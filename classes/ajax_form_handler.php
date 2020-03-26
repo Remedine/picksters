@@ -80,9 +80,8 @@ class ajax_form_handler {
 
 	public function send_week_form() {
 		if ( check_ajax_referer( 'season-form-nonce' ) == true ) {
-			$response['season_input'] = get_transient( 'season_input_transient' );
-			//$response['week_input']   = $_POST['week_input'];
-
+			//$response['season_input'] = get_transient( 'season_input_transient' );
+			$response['season_input'] = $_POST['season_input'];
 			switch ($response['season_input']) {
 				case 'PRE':
 					$response['week'] = $_POST['pre_week'];

@@ -26,34 +26,35 @@ jQuery(document).ready(function ($) {
             else {
                 console.log('something is up');
             }
-            $.ajax({
-                url: settings.ajaxURL, // Here goes our WordPress AJAX endpoint.
-                type: 'post',
-                data: {
-                    season_input,
-                    _ajax_nonce: settings.nonce,
-                    action: 'season_form'
-                },
-                success: function (response) {
-                    console.log(response);
-                    $('div.week_chooser').show();
-                    week_submit();
+   ////        $.ajax({
+   //            url: settings.ajaxURL, // Here goes our WordPress AJAX endpoint.
+   //            type: 'post',
+   //            data: {
+   //                season_input,
+   //                _ajax_nonce: settings.nonce,
+   //                action: 'season_form'
+   //            },
+   //            success: function (response) {
+   //                console.log(response);
+   //                $('div.week_chooser').show();
+   //                week_submit();
 
-                },
-                fail: function (err) {
-                    // You can craft something here to handle an error if something goes wrong when doing the AJAX request.
-                    alert("There was an error: " + err);
-                }
-            });
+   //            },
+   //            fail: function (err) {
+   //                // You can craft something here to handle an error if something goes wrong when doing the AJAX request.
+   //                alert("There was an error: " + err);
+   //            }
+   //        });
 
-            $season_input = undefined;
-            console.log($season_input);
-            // This return prevents the submit event to refresh the page.
-            return false;
-        })
+   //        $season_input = undefined;
+   //        console.log($season_input);
+   //        // This return prevents the submit event to refresh the page.
+   //        return false;
+            week_submit(season_input);
+      })
     }
 
-    function week_submit() {
+    function week_submit(season_input) {
         $('.ajax_choose_week').on('submit', function () {
 
                 var pre_week = $('#pre_week').find(":selected").val();
@@ -69,6 +70,7 @@ jQuery(document).ready(function ($) {
                 url: settings.ajaxURL, // Here goes our WordPress AJAX endpoint.
                 type: 'post',
                 data: {
+                    season_input,
                     pre_week,
                     reg_week,
                     post_week,
