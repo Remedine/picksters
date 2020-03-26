@@ -71,7 +71,7 @@ class ajax_form_handler {
 			set_transient( 'season_input_transient', $_POST['season_input'], 72000 );
 			$response = $_POST['season_input'];
 
-			wp_send_json_success(  );
+			wp_send_json_success( json_encode( $response ));
 		};
 
 
@@ -81,7 +81,20 @@ class ajax_form_handler {
 	public function send_week_form() {
 		if ( check_ajax_referer( 'season-form-nonce' ) == true ) {
 			$response['season_input'] = get_transient( 'season_input_transient' );
-			$response['week_input']   = $_POST['week_input'];
+			//$response['week_input']   = $_POST['week_input'];
+
+			switch ($response['season_input']) {
+				case 'PRE':
+					$response['week'] = $_POST['pre_week'];
+					break;
+				case 'REG':
+					$response['week'] = $_POST['reg_week'];
+					break;
+				case 'POST':
+					$response['week'] = $_POST['post_week'];
+					break;
+			}
+
 
 			wp_send_json_success( json_encode( $response ) );
 		}

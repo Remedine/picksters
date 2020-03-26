@@ -13,28 +13,18 @@ namespace ExecutiveSuiteIt\Picksters\Templates;
 //get_header();
 ?>
 
-<div class="week_chooser" id="pre_week" style="display:none">
+<div class="week_chooser" id="choose_week" style="display:none">
     <form class="ajax_choose_week" action="<?php echo get_site_url() . '/user/picks'; ?>" method="post" id="week_chooser_form">
 
         <label for="week">Choose a week:</label>
-        <select class="week" name="week" form="week_chooser_form">
+        <select id="pre_week" class="week" name="pre_week" form="week_chooser_form">
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
             <option value="4">4</option>
         </select>
 
-        <input type='submit' name='picksters_week_submit' value='<?php echo __( 'Submit Week', 'picksters' ); ?>'/>
-
-    </form>
-    <p class="report-a-bug-response"></p>
-</div>
-
-<div class="week_chooser" id="reg_week" style="display:none">
-    <form class="ajax_choose_week" action="<?php echo get_site_url() . '/user/picks'; ?>" method="post" id="week_chooser_form">
-
-        <label for="week">Choose a week:</label>
-        <select class="week" name="week" form="week_chooser_form">
+        <select id="reg_week" class="week" name="reg_week" form="week_chooser_form">
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -54,24 +44,14 @@ namespace ExecutiveSuiteIt\Picksters\Templates;
             <option value="17">17</option>
         </select>
 
-        <input type='submit' name='picksters_week_submit' value='<?php echo __( 'Submit Week', 'picksters' ); ?>'/>
-
-    </form>
-    <p class="report-a-bug-response"></p>
-</div>
-
-<div class="week_chooser" id="post_week" style="display:none">
-    <form class="ajax_choose_week" action="<?php echo get_site_url() . '/user/picks'; ?>" method="post" id="week_chooser_form">
-
-        <label for="week">Choose a week:</label>
-        <select class="week" name="week" form="week_chooser_form">
+        <select id="post_week" class="week" name="post_week" form="week_chooser_form">
             <option value="18">Wildcard Game</option>
             <option value="19">Divisional Game</option>
             <option value="20">Championship Game</option>
             <option value="22">Superbowl Game</option>
         </select>
 
-        <input type='submit' name='picksters_week_submit' value='<?php echo __( 'Submit Week', 'picksters' ); ?>'/>
+        <input type='submit' class="submit" name='picksters_week_submit' value='<?php echo __( 'Submit Week', 'picksters' ); ?>'/>
 
     </form>
     <p class="report-a-bug-response"></p>
