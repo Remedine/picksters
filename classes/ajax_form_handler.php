@@ -14,9 +14,7 @@ class ajax_form_handler {
 
 	public function __construct() {
 		add_action( 'wp_enqueue_scripts', array( $this, 'ajax_scripts' ) );
-		add_action( 'wp_ajax_season_form', array( $this, 'send_season_form' ) ); // This is for authenticated users
-		//add_action( 'wp_ajax_nopriv_season_form', array( 'send_season_form' ) );
-		add_action( 'wp_ajax_week_form', array($this, 'send_week_form' ) );
+		add_action( 'wp_ajax_week_form', array( $this, 'send_week_form' ) );
 	}
 
 	public function week_form() {
@@ -58,31 +56,11 @@ class ajax_form_handler {
 
 	}
 
-	/**
-	 * In this function we will handle the season chooser form input and response.
-	 *
-	 * @return void
-	 */
-
-	public function send_season_form() {
-
-		// This is a secure process to validate if this request comes from a valid source.
-		if ( check_ajax_referer( 'season-form-nonce' ) == true ) {
-			set_transient( 'season_input_transient', $_POST['season_input'], 72000 );
-			$response = $_POST['season_input'];
-
-			wp_send_json_success( json_encode( $response ));
-		};
-
-
-		die();
-	}
 
 	public function send_week_form() {
 		if ( check_ajax_referer( 'season-form-nonce' ) == true ) {
-			//$response['season_input'] = get_transient( 'season_input_transient' );
 			$response['season_input'] = $_POST['season_input'];
-			switch ($response['season_input']) {
+			switch ( $response['season_input'] ) {
 				case 'PRE':
 					$response['week'] = $_POST['pre_week'];
 					break;
@@ -93,8 +71,6 @@ class ajax_form_handler {
 					$response['week'] = $_POST['post_week'];
 					break;
 			}
-
-
 			wp_send_json_success( json_encode( $response ) );
 		}
 

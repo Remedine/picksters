@@ -1,7 +1,7 @@
 jQuery(document).ready(function ($) {
 
     function season_submit() {
-        $('#season_type_chooser_form').change( function () {
+        $('#season_type_chooser_form').change(function () {
             var season_input = $('#season_type option:selected').val();
             console.log(season_input);
             $('div.week_chooser').show();
@@ -30,42 +30,16 @@ jQuery(document).ready(function ($) {
             week_submit(season_input);
         })
     }
-   ////        $.ajax({
-   //            url: settings.ajaxURL, // Here goes our WordPress AJAX endpoint.
-   //            type: 'post',
-   //            data: {
-   //                season_input,
-   //                _ajax_nonce: settings.nonce,
-   //                action: 'season_form'
-   //            },
-   //            success: function (response) {
-   //                console.log(response);
-   //                $('div.week_chooser').show();
-   //                week_submit();
-
-   //            },
-   //            fail: function (err) {
-   //                // You can craft something here to handle an error if something goes wrong when doing the AJAX request.
-   //                alert("There was an error: " + err);
-   //            }
-   //        });
-
-   //        $season_input = undefined;
-   //        console.log($season_input);
-   //        // This return prevents the submit event to refresh the page.
-   //        return false;
 
 
     function week_submit(season_input) {
         $('.ajax_choose_week').on('submit', function () {
 
-                var pre_week = $('#pre_week').find(":selected").val();
-                var reg_week = $('#reg_week').find(":selected").val();
-                var post_week = $('#post_week').find(":selected").val();
+            var pre_week = $('#pre_week').find(":selected").val();
+            var reg_week = $('#reg_week').find(":selected").val();
+            var post_week = $('#post_week').find(":selected").val();
 
-
-
-            console.log( reg_week, pre_week, post_week);
+            console.log(reg_week, pre_week, post_week);
 
             // Here is the ajax petition.
             $.ajax({
@@ -81,7 +55,6 @@ jQuery(document).ready(function ($) {
                 },
                 success: function (response) {
                     console.log(response);
-                   // document.getElementById("week_chooser_form").reset();
                 },
                 fail: function (err) {
                     // You can craft something here to handle an error if something goes wrong when doing the AJAX request.
@@ -93,6 +66,5 @@ jQuery(document).ready(function ($) {
             return false;
         })
     }
-
     season_submit();
 })
