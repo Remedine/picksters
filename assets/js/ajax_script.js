@@ -1,9 +1,10 @@
 jQuery(document).ready(function ($) {
 
     function season_submit() {
-        $('#season_type_chooser_form').on('submit', function () {
-            var season_input = $('#season_type').val();
+        $('#season_type_chooser_form').change( function () {
+            var season_input = $('#season_type option:selected').val();
             console.log(season_input);
+            $('div.week_chooser').show();
 
             if (season_input == 'PRE') {
                 $("#reg_week, #post_week").hide();
@@ -26,6 +27,9 @@ jQuery(document).ready(function ($) {
             else {
                 console.log('something is up');
             }
+            week_submit(season_input);
+        })
+    }
    ////        $.ajax({
    //            url: settings.ajaxURL, // Here goes our WordPress AJAX endpoint.
    //            type: 'post',
@@ -50,9 +54,7 @@ jQuery(document).ready(function ($) {
    //        console.log($season_input);
    //        // This return prevents the submit event to refresh the page.
    //        return false;
-            week_submit(season_input);
-      })
-    }
+
 
     function week_submit(season_input) {
         $('.ajax_choose_week').on('submit', function () {

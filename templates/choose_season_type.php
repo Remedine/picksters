@@ -25,8 +25,8 @@ namespace ExecutiveSuiteIt\Picksters\Templates;
 		</select>
 
         <input type="hidden" name="action" value="season_form"/>
-		<input type='submit' id="season_type_chooser_button" name='picksters_season_type_submit' value='<?php echo __( 'Submit Season Type', 'picksters' ); ?>'/>
-
+	<!--	<input type='submit' id="season_type_chooser_button" name='picksters_season_type_submit' value='<?php echo __( 'Submit Season Type', 'picksters' ); ?>'/>
+-->
 	</form>
     <p class="report-a-bug-response"></p>
 </div>
