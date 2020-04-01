@@ -78,8 +78,8 @@ class ajax_form_handler {
 			if ($response['picked'] == false ) {
 				$pass_user_input['season_input'] = $response['season_input'];
 				$pass_user_input['week'] = $response['week'];
-				$url = get_site_url() . '/user/make_picks';
-				wp_redirect( $url );
+				$url = get_site_url() . '/user/make_picks/';
+				wp_safe_redirect( $url );
 				exit;
 			}
 			wp_send_json_success( json_encode( $response ) );
