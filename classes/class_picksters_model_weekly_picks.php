@@ -142,41 +142,21 @@ class Picksters_Model_Weekly_Picks {
 	 */
 
 	public function display_weekly_picks_forms() {
-		global $picksters, $picksters_weekly_picks_params, $digital_seeds_template_loader, $pass_user_input;
+		global $picksters, $picksters_weekly_picks_params, $digital_seeds_template_loader;
 		if ( is_user_logged_in() ) {
-			get_header();
-
-			$current_place_in_season = $picksters->season_data->current_place_in_season();
-			$week_games_array = $this->get_weekly_games( 2019 , $pass_user_input['season_input'], $pass_user_input['week'] );
-			include picksters_plugin_dir . 'templates/weekly-pick-template.php';
-			//$picksters->ajax_form->season_form();
-			//$picksters->ajax_form->week_form();
-			//$week_games_array = $this->get_weekly_games(2019, 'REG', 12);
-			//include picksters_plugin_dir . 'templates/weekly-pick-template.php';
-			get_footer();
-			//$bob = $this->check_if_picked_already(1, 2019, 'REG', 5);
-			//$week_games_array        = $this->get_weekly_games( $year = $current_place_in_season['year'], $seasonType = $current_place_in_season['season_type'], $week = $current_place_in_season['week'] );
-			//$digital_seeds_template_loader->get_template_part( 'weekly-pick' );
-
-			//include picksters_plugin_dir . 'templates/weekly-pick-template.php';
-		} else {
-			wp_redirect( home_url() );
+			global $picksters;
+			if ( is_user_logged_in() ) {
+				get_header();
+				$picksters->ajax_form->season_form();
+				$picksters->ajax_form->week_form();
+				get_footer();
+			} else {
+				wp_redirect( home_url() );
+			}
 		}
 		exit;
 	}
 
-
-	public function display_chosen_picks() {
-		global $picksters;
-		if ( is_user_logged_in() ) {
-			get_header();
-			$picksters->ajax_form->season_form();
-			$picksters->ajax_form->week_form();
-			get_footer();
-		} else {
-			wp_redirect( home_url() );
-		}
-	}
 
 	/**
 	 * Query to get the NFL games for the week from the database. and returns them as an array.

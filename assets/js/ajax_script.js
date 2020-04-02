@@ -55,6 +55,7 @@ jQuery(document).ready(function ($) {
                 },
                 success: function (response) {
                     console.log(response);
+                    $("#result").html(response)
                 },
                 fail: function (err) {
                     // You can craft something here to handle an error if something goes wrong when doing the AJAX request.

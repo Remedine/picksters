@@ -56,3 +56,4 @@ namespace ExecutiveSuiteIt\Picksters\Templates;
     </form>
     <p class="report-a-bug-response"></p>
 </div>
+<div id="result"></div>

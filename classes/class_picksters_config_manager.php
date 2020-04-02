@@ -134,16 +134,10 @@ class Picksters_Config_Manager {
 
 			case 'picks':
 				do_action( 'picksters_before_weekly_picks');
-				$picksters->weekly_picks->display_chosen_picks();
+				$picksters->weekly_picks->display_weekly_picks_forms();
 				do_action( 'picksters_after_weekly_picks');
 				break;
 
-
-			case 'make_picks':
-				do_action( 'picksters_before_display_chosen_picks');
-				$picksters->weekly_picks->display_weekly_picks_forms();
-				do_action( 'picksters_after_display_chosen_picks');
-				break;
 
 			case 'test':
 				do_action( 'picksters_before_template');

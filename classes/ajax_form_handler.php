@@ -58,7 +58,7 @@ class ajax_form_handler {
 
 
 	public function send_week_form() {
-		global $picksters, $pass_user_input;
+		global $picksters;
 		$user_id = get_current_user_id();
 		if ( check_ajax_referer( 'season-form-nonce' ) == true ) {
 			$response['season_input'] = $_POST['season_input'];
@@ -76,11 +76,10 @@ class ajax_form_handler {
 			//check if picks have been made
 			$response['picked'] = $picksters->weekly_picks->check_if_picked_already( $user_id, '2019', $response['season_input'], $response['week']);
 			if ($response['picked'] == false ) {
-				$pass_user_input['season_input'] = $response['season_input'];
-				$pass_user_input['week'] = $response['week'];
-				$url = get_site_url() . '/user/make_picks/';
-				wp_safe_redirect( $url );
-				exit;
+				$year = 2019;
+
+				$week_games_array = $picksters->weekly_picks->get_weekly_games( $year, $response['season_input'], $response['week']);
+				$response['something'] = include picksters_plugin_dir . 'templates/weekly-pick-template.php';
 			}
 			wp_send_json_success( json_encode( $response ) );
 		}
