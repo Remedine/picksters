@@ -46,7 +46,7 @@ if ( is_array( $picksters_weekly_picks_params ) ) {
 
                 <li>
                     <label class='game_choice_label'>Game #<?php echo $how_many_games ?></label>
-                    <input class='picksters_radio_field' type='radio' id="picksters_radio_game<?php echo $i ?> "
+                    <input class='picksters_radio_field' type='radio' id="picksters_radio_game<?php echo $i ?>"
                            name='game<?php echo $how_many_games?>'
                            value="<?php echo $week_games_array[0][ $i ]['home_team'] ?>"
                            <?php

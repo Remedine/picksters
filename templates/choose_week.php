@@ -54,6 +54,7 @@ namespace ExecutiveSuiteIt\Picksters\Templates;
         <input type='submit' class="submit" name='picksters_week_submit' value='<?php echo __( 'Submit Week', 'picksters' ); ?>'/>
 
     </form>
-    <p class="report-a-bug-response"></p>
+
 </div>
+
 <div id="result"></div>

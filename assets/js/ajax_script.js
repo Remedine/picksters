@@ -33,6 +33,7 @@ jQuery(document).ready(function ($) {
 
 
     function week_submit(season_input) {
+        var view_data;
         $('.ajax_choose_week').on('submit', function () {
 
             var pre_week = $('#pre_week').find(":selected").val();
@@ -54,7 +55,8 @@ jQuery(document).ready(function ($) {
                     action: 'week_form'
                 },
                 success: function (response) {
-                    console.log(response);
+                    view_data = response.view_data;
+                    console.log(view_data);
                     $("#result").html(response)
                 },
                 fail: function (err) {
@@ -69,3 +71,14 @@ jQuery(document).ready(function ($) {
     }
     season_submit();
 })
+
+
+//console.log(view_data); //Shows the correct piece of information
+//doWork(view_data); // Pass data to a function
+//}
+//});
+//
+//function doWork(data)
+//{
+//    //perform work here
+//}
